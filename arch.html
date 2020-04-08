@@ -7,7 +7,7 @@
 <html>
 
 <head>
-	<title>Cracker Barrel | Nischay</title>
+	<title>Linux good | Nischay</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -65,70 +65,10 @@
 		<li><a href="#" class="button fit">Log In</a></li>
 	</ul>
 </nav>
- 
-    
-    
-<!-- Main -->
-<div id="main" class="alt">
+ <p><img src="https://i.redd.it/lbwm4to97xm31.png" alt="Linux good" /></p>
 
-<!-- One -->
-<section id="one">
-	<div class="inner">
-		<header class="major">
-			<h1>Cracker Barrel</h1>
-		</header>
-		
-		<h1 id="cracker-barrel-50-points-at-the-end">Cracker Barrel (50 points at the end)</h1>
-
-<h2 id="question">Question</h2>
-
-<p>I found a USB drive under the checkers board at cracker barrel. My friends told me not to plug it in but surely nothing bad is on it?</p>
-
-<p>I found this file, but I can’t seem to unlock it’s secrets. Can you help me out?</p>
-
-<p>Also.. once you think you’ve got it I think you should try to connect to challenges.auctf.com at port 30000 not sure what that means, but it written on the flash drive..</p>
-
-<p>Original Author: nadrojisk</p>
-
-<h2 id="long-writeup">Long Writeup</h2>
-
-<p>There’s a section called check, which uses three parts (check_1, check_2, and check_3).</p>
-
-<p>Keep in mind that the CTF uses sym.remove_newline, which basically changes ‘\n’ to ‘\0’. Therefore, if there are two opposing things, just type the first one, and the second one does <strong>NOT</strong> matter since <code class="highlighter-rouge">strcmp</code> only checks till the next ‘\0’.</p>
-
-<p>So, here’s <code class="highlighter-rouge">check_1</code>:</p>
-
-<p><img src="/assets/images/cracker/check_1.png" alt="check_1" /></p>
-
-<p>This checks if arg1 is equal to “starwars”, and then exits if it’s true.</p>
-
-<p>Here’s <code class="highlighter-rouge">check_2</code>:</p>
-
-<p><img src="/assets/images/cracker/check_2.png" alt="check_2" /></p>
-
-<p>Basically checks if arg1 is equal to the reverse of “si siht egassem terces”, which i “secret message this is”</p>
-
-<p>Here’s <code class="highlighter-rouge">check_3</code>:</p>
-
-<p><img src="/assets/images/cracker/check_3.png" alt="check_3" /></p>
-
-<p>This runs two loops:</p>
-
-<p>One, that compares the values of each element of the array <code class="highlighter-rouge">arg1</code> with an array iVar3 with an offset of 22.
-In the second loop, the checking function gives <code class="highlighter-rouge">true</code> when the check is not equal. (The required boolean is <code class="highlighter-rouge">false</code> here).</p>
-
-<p>Since the check is only for the length of the input, we can input whatever little input we want to.</p>
-
-<p>So, finding the value of <code class="highlighter-rouge">chr(0x7a - 2^0x14)</code>, we have lowercase “l”. This is the third input.</p>
-
-<p>And that gives us the flag.</p>
-
-	</div>
-</section>
-
-</div>
-
-    <!-- Contact -->
+<h3 id="heres-something-thatll-cement-that-thought"><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Here’s</a> something that’ll cement that thought</h3>
+ <!-- Contact -->
 <section id="contact">
 	<div class="inner">
 		<section>
