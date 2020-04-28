@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Houseplant CTF | Nischay</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="/assets/css/main.css" />
+	<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
+	<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
+</head>
+
+
+<body>
+
+    <!-- Wrapper -->
+<div id="wrapper">
+
+<!-- Header -->
+<header id="header">
+	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>
+	<nav>
+		<a href="#menu">Menu</a>
+	</nav>
+</header>
+
+<!-- Menu -->
+<nav id="menu">
+	<ul class="links">
+        
+		    
+		
+		    
+		
+		    
+		
+		    
+		        <li><a href="/">Home</a></li>
+	    	
+		
+		    
+		
+		
+		    
+		
+		    
+		        <li><a href="/all_posts.html">All posts</a></li>
+		    
+		
+		    
+		        <li><a href="/arch.html">Linux good</a></li>
+		    
+		
+		    
+		
+	</ul>
+	<ul class="actions vertical">
+		<li><a href="#" class="button special fit">Get Started</a></li>
+		<li><a href="#" class="button fit">Log In</a></li>
+	</ul>
+</nav>
+ 
+    
+    
+<!-- Main -->
+<div id="main" class="alt">
+
+<!-- One -->
+<section id="one">
+	<div class="inner">
+		<header class="major">
+			<h1>Houseplant CTF</h1>
+		</header>
+		
+		<p>I was able to solve 8/10 of these challs, so that’s kinda nice.</p>
+
+<h1 id="fragile">Fragile</h1>
+
+<h2 id="question">Question</h2>
+
+<p>Can you help me move my stuff? This one’s fragile!</p>
+
+<h2 id="writeup">Writeup</h2>
+
+<p>This is the important code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static boolean check(String input){
+        boolean h = false;
+        String flag = "h1_th3r3_1ts_m3";
+        String theflag = "";
+        if(input.length() != flag.length()){
+            return false;
+        }
+        for(int i = 0; i &lt; flag.length(); i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i)));
+        }
+        return theflag.equals("ÐdØÓ^y§å^rÍaèÒÁ¡^w");
+    }
+</code></pre></div></div>
+
+<p>Here, we can see that <code class="highlighter-rouge">theflag.equals()</code> doesn’t really have ASCII codes. Therefore, it’d be better to get the values as properly as possible. Therefore, I switched to Kate and copied the final <code class="highlighter-rouge">theflag</code> value.
+The final value of <code class="highlighter-rouge">theflag</code> is <code class="highlighter-rouge">ÐdØÓ§åÍaèÒÁ¡</code>.</p>
+
+<p>This function is basically adding every char in <code class="highlighter-rouge">input</code> to the corresponding character in <code class="highlighter-rouge">flag</code> and checking if it is <code class="highlighter-rouge">ÐdØÓ§åÍaèÒÁ¡</code>.
+Therefore, we just need to subtract.</p>
+
+<h2 id="exploit">Exploit</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>thefinalflag = "ÐdØÓ§åÍaèÒÁ¡"
+flag = "h1_th3r3_1ts_m3"
+
+for i in range(len(flag)):
+	print(chr(ord(thefinalflag[i])-ord(flag[i])),end='')
+</code></pre></div></div>
+<p>This gives out: <code class="highlighter-rouge">h3y_1ts_n0t_b4d</code></p>
+
+<h2 id="flag">Flag</h2>
+<p><code class="highlighter-rouge">rtcp{h3y_1ts_n0t_b4d}</code></p>
+
+<h1 id="breakable">Breakable</h1>
+
+<h2 id="question-1">Question</h2>
+
+<p>Okay…this one’s better, but still be careful!</p>
+
+<h2 id="writeup-1">Writeup</h2>
+
+<p>This is the checker function:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static boolean check(String input){
+        boolean h = false;
+        String flag = "k33p_1t_in_pl41n";
+        String theflag = "";
+        int i = 0;
+        if(input.length() != flag.length()){
+            return false;
+        }
+        for(i = 0; i &lt; flag.length()-2; i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i+2)));
+        }
+        for(i = 2; i &lt; flag.length(); i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i-2)));
+        }
+        String[] flags = theflag.split("");
+        for(; i &lt; (int)((flags.length)/2); i++){
+            flags[i] = Character.toString((char)((int)(flags[i].charAt(0)) + 20));
+        }
+        return theflag.equals("Ò^rdÝ¾¤¤¾Ùà^oåÐ^scÝÆ^p¥ÌÈá^oÏÜ¦aã");
+    }
+</code></pre></div></div>
+<p>Again, let’s get the <em>real</em> value of theflag. The real value of theflag is <code class="highlighter-rouge">ÒdÝ¾¤¤¾ÙàåÐcÝÆ¥ÌÈáÏÜ¦aã</code>.</p>
+
+<p>Now, we need to reverse it. The last for loop seems to go from i=2 to flag.length and the first for loop goes from 0 to flag.length-2. Therefore, we know that theflag has input[2:] in the latter half of it, and it has input[:-2] in the first half.</p>
+
+<p>Therefore, we need to reverse those two things to get the flag.</p>
+
+<h2 id="exploit-1">Exploit</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>realflag = ['0' for i in range(16)]
+flag = "k33p_1t_in_pl41n"
+for i in range(0,len(flag)-2):
+	realflag[i+2] = chr(ord(a[i]) - ord(flag[i]))
+for i in range(2,len(flag)):
+	realflag[i-2] = chr(ord(a[i+len(flag)-4]) - ord(flag[i]))
+print("rtcp{"+''.join(realflag)+"}")
+</code></pre></div></div>
+
+<h2 id="flag-1">Flag</h2>
+
+<p><code class="highlighter-rouge">rtcp{0mg_1m_s0_pr0ud_}</code></p>
+
+<h1 id="bendy">Bendy</h1>
+
+<h2 id="question-2">Question</h2>
+
+<p>I see you’ve found my straw collection…(this is the last excessive for loop one i swear)</p>
+
+<h2 id="writeup-2">Writeup</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    public static boolean check(String input){
+        boolean h = false;
+        String flag = "r34l_g4m3rs_eXclus1v3";
+        String theflag = "";
+        int i = 0;
+        if(input.length() != flag.length()){
+            return false;
+        }
+        for(i = 0; i &lt; flag.length()-14; i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i+8)));
+        }
+        for(i = 10; i &lt; flag.length()-6; i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i-8)));
+        }
+        for(; i &lt; flag.length(); i++){
+            theflag += (char)((int)(flag.charAt(i-3)) + (int)(input.charAt(i)));
+        }
+        //Ò^rdÝ¾¤¤¾Ùà^oåÐ^scÝÆ^p¥ÌÈá^oÏÜ¦aã
+        String[] flags = theflag.split("");
+        for(i=0; i &lt; (int)((flags.length)/2); i++){
+            flags[i] = Character.toString((char)((int)(flags[i].charAt(0)) + 20));
+        }
+        theflag = theflag.substring(flags.length/2);
+        for(int k = 0; k &lt; ((flags.length)/2); k++){
+            theflag += flags[k];
+        }
+        return theflag.equals("ÄÑÓ¿ÂÒêáøz§è§ñy÷¦");
+    }
+</code></pre></div></div>
+
+<p>(This chall is the old version, btw)</p>
+
+<p>The first for loop will encode (sort of) input[:6], and the second loop will encode [2:7] and the third one encodes input[15:].</p>
+
+<h2 id="exploit-2">Exploit</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>start_junk = "ÄÑÓ¿ÂÒêáøz§è§ñy÷¦"
+med_junk = ""
+for i in range(len(start_junk)//2,len(start_junk)):
+	med_junk += chr(ord(start_junk[i])-20)
+med_junk += start_junk[:len(start_junk)//2]
+print(med_junk)
+flag = "r34l_g4m3rs_eXclus1v3"
+ree = ['/' for i in range(21)]
+ree_count = 0
+for i in range(0,len(flag)-14):
+	print(ree_count)
+	ree[i+8] = chr(ord(med_junk[ree_count]) - ord(flag[i]))
+	ree_count += 1
+for i in range(10,len(flag)-6):
+	ree[i-8] = chr(ord(med_junk[ree_count]) - ord(flag[i]))
+	ree_count += 1
+for i in range(len(flag)-6, len(flag)):
+	ree[i] = chr(ord(med_junk[ree_count]) - ord(flag[i-3]))
+	ree_count += 1
+print(''.join(ree))
+</code></pre></div></div>
+
+<p>(sorry for the variable names, I was frustrated)</p>
+
+<p>Also you need to guess some of the flag.</p>
+
+<h2 id="flag-2">Flag</h2>
+
+<p><code class="highlighter-rouge">rtcp{h0p3_y0ur3_h4v1ng_fun</code></p>
+
+<h1 id="ez">EZ</h1>
+
+<h2 id="question-3">Question</h2>
+
+<p>I made a password system, bet you can’t get the flag</p>
+
+<h2 id="writeup-3">Writeup</h2>
+
+<p>The flag is in a comment. Honestly.</p>
+
+<h2 id="flag-3">Flag</h2>
+
+<p><code class="highlighter-rouge">rtcp{tH1s_i5_4_r3aL_fL4g_s0_Do_sUbm1T_1t!}</code></p>
+
+<h1 id="pz">PZ</h1>
+
+<h2 id="question-4">Question</h2>
+
+<p>Ok, I think I made it slightly better. Now you won’t get the flag this time!</p>
+
+<h2 id="writeup-4">Writeup</h2>
+
+<p>Again, literally in the code.</p>
+
+<h2 id="output">Output</h2>
+
+<p>(Because of course I want to show uwuspeak).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[kek@tlh PZ]$ python pass1.py 
+Enter the password: rtcp{iT5_s1mPlY_1n_tH3_C0d3}
+Unlocked. The flag is the password.
+b-but i wunna show off my catswpeak uwu~... why wont you let me do my nya!!
+</code></pre></div></div>
+
+<h1 id="lemon">LEMON</h1>
+
+<h2 id="question-5">Question</h2>
+
+<p>Fine. I made it a bit more secure by not just leaving it directly in the code.</p>
+
+<h2 id="writeup-5">Writeup</h2>
+
+<p>Build together the loose bits.</p>
+
+<h2 id="flag-4">Flag</h2>
+
+<p><code class="highlighter-rouge">rtcp{y34H_tHiS_a1nT_sEcuR3}</code></p>
+
+<h1 id="squeezy">SQUEEZY</h1>
+
+<h2 id="question-6">Question</h2>
+
+<p>Ok this time, you aren’t getting anywhere near anything.</p>
+
+<h2 id="writeup-6">Writeup</h2>
+
+<p>This XOR’s every element in key, with userinput.</p>
+
+<h2 id="exploit-3">Exploit</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a = "\x1f\x11\x0c\x07\x15\x00Q\x18:#D\x08-&gt;\x14U\x1a%1\x01Q\x1f:$D\x17&amp;\x03(\r^\x19*X\x1c"
+key = "meownyameownyameownyameownyameownya"
+print(''.join(chr(ord(a)^ord(b)) for a,b in zip(a,key)))
+</code></pre></div></div>
+
+<h2 id="flag-5">Flag</h2>
+
+<p><code class="highlighter-rouge">rtcp{y0u_L3fT_y0uR_x0r_K3y_bEh1nD!}</code></p>
+
+<h1 id="thedanzman">thedanzman</h1>
+
+<h2 id="question-7">Question</h2>
+
+<p>Fine. I made it even harder. It is now no longer “ez”, “pz”, “lemon” or “squeezy”.
+You will never get the flag this time.</p>
+
+<h2 id="writeup-7">Writeup</h2>
+
+<p>This chall does the following things:</p>
+
+<ol>
+  <li>Take user input.</li>
+  <li>use a key.</li>
+  <li>encode key with rot_13</li>
+  <li>xor every part of input with rot_13’d key</li>
+  <li>base64 encode the result</li>
+  <li>rot_13 it</li>
+  <li>reverse it</li>
+  <li>check if it is equal to “‘=ZkXipjPiLIXRpIYTpQHpjSQkxIIFbQCK1FR3DuJZxtPAtkR’o”</li>
+</ol>
+
+<p>Therefore we need to do the exact reverse of it.</p>
+
+<h2 id="exploit-4">Exploit</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import codecs
+
+given_bytes = "'=ZkXipjPiLIXRpIYTpQHpjSQkxIIFbQCK1FR3DuJZxtPAtkR'o"[::-1]
+given_bytes = codecs.decode(given_bytes,'rot_13')
+given_str = codecs.decode(bytes(given_bytes[2:-1],'ascii'),'base64').decode('ascii')
+key = codecs.encode("nyameowpurrpurrnyanyapurrpurrnyanya",'rot_13')
+print(''.join(chr(ord(a)^ord(b)) for a,b in zip(key,given_str)))
+</code></pre></div></div>
+
+<h2 id="flag-6">Flag</h2>
+
+<p><code class="highlighter-rouge">rtcp{n0w_tH4T_w45_m0r3_cH4lL3NgiNG}</code></p>
+
+	</div>
+</section>
+
+</div>
+
+    <!-- Contact -->
+<section id="contact">
+	<div class="inner">
+		<section>
+			<form action="https://formspree.io/hegdenischay@gmail.com" method="POST">
+				<div class="field half first">
+					<label for="name">Name</label>
+					<input type="text" name="name" id="name" />
+				</div>
+				<div class="field half">
+					<label for="email">Email</label>
+					<input type="text" name="_replyto" id="email" />
+				</div>
+				<div class="field">
+					<label for="message">Message</label>
+					<textarea name="message" id="message" rows="6"></textarea>
+				</div>
+				<ul class="actions">
+					<li><input type="submit" value="Send Message" class="special" /></li>
+					<li><input type="reset" value="Clear" /></li>
+				</ul>
+			</form>
+		</section>
+		<section class="split">
+			<section>
+				<div class="contact-method">
+					<span class="icon alt fa-envelope"></span>
+					<h3>Email</h3>
+					<a href="#">hegdenischay@gmail.com</a>
+				</div>
+			</section>
+			<section>
+				<div class="contact-method">
+					<span class="icon alt fa-home"></span>
+					<h3>Address</h3>
+					<span>
+					
+					
+					    Bengaluru,
+					
+					
+					    KA 
+					
+					
+					    560035<br />
+					
+					
+					    India
+					
+					</span>
+				</div>
+			</section>
+		</section>
+	</div>
+</section>
+
+<!-- Footer -->
+	<footer id="footer">
+		<div class="inner">
+			<ul class="icons">
+				
+				<li><a href="https://twitter.com/thatloststudent" class="icon alt fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+				
+				
+				<li><a href="404.html" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+				
+				
+				
+				
+				
+				<li><a href="https://github.com/hegdenischay" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+				
+				
+				
+				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+				
+			</ul>
+			<ul class="copyright">
+				<li>&copy; Nischay </li>
+				<li>Design: <a href="https://html5up.net" target="_blank">HTML5 UP</a></li>
+				<li>Jekyll integration: <a href="http://andrewbanchi.ch" target="_blank">Andrew Banchich</a></li>
+
+			</ul>
+		</div>
+	</footer>
+
+</div>
+
+<!-- Scripts -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/jquery.scrolly.min.js"></script>
+	<script src="/assets/js/jquery.scrollex.min.js"></script>
+	<script src="/assets/js/skel.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+	<!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="/assets/js/main.js"></script>
+
+
+</body>
+
+</html>
