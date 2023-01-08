@@ -152,6 +152,8 @@ input[type=text], select, textarea {
   margin-bottom: 16px; /* Bottom margin */
   resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
   background-color: inherit;
+  color: white;
+  font-family: inherit;
 }
 
 /* Style the submit button with a specific background color etc */
