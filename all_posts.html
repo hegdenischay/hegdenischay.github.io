@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<!--
-    Forty by HTML5 UP
-    html5up.net | @ajlkn
-    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-  -->
 <html>
 
   <head>
 	<title>All posts | Nischay</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
 	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
 	<link rel="stylesheet" href="/assets/css/main.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/brands.css">
 	<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
 	<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
 </head>
@@ -19,18 +15,11 @@
 
   <body>
 
-    <!-- Wrapper -->
-<div id="wrapper">
-
-<!-- Header -->
-<header id="header">
-	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>
-	<nav>
-		<a href="#menu">Menu</a>
-	</nav>
+    <!-- Header -->
+<!--<header id="header">
+	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>-->
 </header>
-
-<!-- Menu -->
+<!--
 <nav id="menu">
 	<ul class="links">
         
@@ -41,10 +30,10 @@
 		    
 		
 		    
-		        <li><a href="/">Home</a></li>
-	    	
 		
 		    
+		        <li><a href="/">Home</a></li>
+	    	
 		
 		
 		    
@@ -60,23 +49,54 @@
 		    
 		
 	</ul>
-	<ul class="actions vertical">
-		<li><a href="#" class="button special fit">Get Started</a></li>
-		<li><a href="#" class="button fit">Log In</a></li>
-	</ul>
+</nav>-->
+
+<!-- Sidebar -->
+<nav id="menu">
+	<div class="sidebar">
+        
+		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
+		        <a href="/">Home</a>
+	    	
+		
+		
+		    
+		
+		    
+		        <a href="/all_posts.html">All posts</a>
+		    
+		
+		    
+		        <a href="/arch.html">Linux good</a>
+		    
+		
+		    
+		
+	</div>
 </nav>
+
+<!-- Div with one image in it lol -->
+<div class="name" align="center"><img src="/assets/images/name.png" href="/"></div>
  
     
     
     <!-- Main -->
-    <div id="main" class="alt">
+    <div id="main" class="main">
 
       <!-- One -->
       <section id="one">
 	<div class="inner">
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/08/15/ascwg.html"><h2>Arab Security Cyber Wargames</h2></a>
 	    <p>August 15, 2020</p>
 	  </header>
@@ -84,7 +104,7 @@
 	  
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/08/10/PoseidonCTF.html"><h2>PoseidonCTF</h2></a>
 	    <p>August 10, 2020</p>
 	  </header>
@@ -92,7 +112,7 @@
 	  
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/06/10/NoobCTF0x1.html"><h2>NoobCTF 0x1</h2></a>
 	    <p>June 10, 2020</p>
 	  </header>
@@ -100,7 +120,7 @@
 	  
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/04/28/Houseplant.html"><h2>Houseplant CTF</h2></a>
 	    <p>April 28, 2020</p>
 	  </header>
@@ -108,7 +128,7 @@
 	  
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/04/20/WPICTF.html"><h2>WPICTF 2020</h2></a>
 	    <p>April 20, 2020</p>
 	  </header>
@@ -116,7 +136,7 @@
 	  
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/04/08/sora.html"><h2>Sora</h2></a>
 	    <p>April 08, 2020</p>
 	  </header>
@@ -124,7 +144,7 @@
 	  
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/04/08/mr-game.html"><h2>Mr_Game_and_watch</h2></a>
 	    <p>April 08, 2020</p>
 	  </header>
@@ -132,7 +152,7 @@
 	  
           
 	  
-	  <header class="major">
+	  <header class="post">
 	    <a href="/2020/04/06/cracker.html"><h2>Cracker Barrel</h2></a>
 	    <p>April 06, 2020</p>
 	  </header>
@@ -145,10 +165,14 @@
     </div>
 
     <!-- Contact -->
-<section id="contact">
+<section class="contact">
 	<div class="inner">
 		<section>
-			<form action="https://formspree.io/hegdenischay@gmail.com" method="POST">
+		<h2> Contact me </h2>
+			<form action="https://formkeep.com/f/89c23290a542"
+			accept-charset="UTF-8"
+			enctype="multipart/form-data"
+			method="POST">
 				<div class="field half first">
 					<label for="name">Name</label>
 					<input type="text" name="name" id="name" />
@@ -162,12 +186,12 @@
 					<textarea name="message" id="message" rows="6"></textarea>
 				</div>
 				<ul class="actions">
-					<li><input type="submit" value="Send Message" class="special" /></li>
-					<li><input type="reset" value="Clear" /></li>
+					<input type="submit" value="Send Message" class="special" />
+					<input type="reset" value="Clear" class="special"/>
 				</ul>
 			</form>
 		</section>
-		<section class="split">
+<!--		<section class="split">
 			<section>
 				<div class="contact-method">
 					<span class="icon alt fa-envelope"></span>
@@ -196,50 +220,42 @@
 					</span>
 				</div>
 			</section>
-		</section>
+		</section>-->
 	</div>
 </section>
 
 <!-- Footer -->
-	<footer id="footer">
+	<footer id="footer" class="socials">
+	<h2> Socials </h2>
 		<div class="inner">
 			<ul class="icons">
 				
-				<li><a href="https://twitter.com/thatloststudent" class="icon alt fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+				<li><a href="https://twitter.com/thatloststudent" target="_blank"><i class="icon alt twitter"><span class="label">Twitter</span></i></a></li>
 				
 				
-				<li><a href="404.html" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+				<li><a href="https://infosec.exchange/@thatloststudent" class="icon alt mastodon" target="_blank"><span class="label">Fediverse</span></a></li>
 				
 				
-				
-				
-				
-				<li><a href="https://github.com/hegdenischay" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+				<li><a href="https://matrix.to/#/&commat;nischay&colon;nischay&period;me" class="icon alt matrix" target="_black"><img src="/assets/images/icons/matrix.svg" style="width: 40px; max-height:20px;"><span class="label">Matrix</span></a></li>
 				
 				
 				
-				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
 				
-			</ul>
-			<ul class="copyright">
-				<li>&copy; Nischay </li>
-				<li>Design: <a href="https://html5up.net" target="_blank">HTML5 UP</a></li>
-				<li>Jekyll integration: <a href="http://andrewbanchi.ch" target="_blank">Andrew Banchich</a></li>
-
+				
+				
+				
+				
+				<li><a href="https://github.com/hegdenischay" class="icon alt github" target="_blank"><span class="label">GitHub</span></a></li>
+				
+				
+				
+				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+				
 			</ul>
 		</div>
 	</footer>
 
 </div>
-
-<!-- Scripts -->
-	<script src="/assets/js/jquery.min.js"></script>
-	<script src="/assets/js/jquery.scrolly.min.js"></script>
-	<script src="/assets/js/jquery.scrollex.min.js"></script>
-	<script src="/assets/js/skel.min.js"></script>
-	<script src="/assets/js/util.js"></script>
-	<!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js"></script><![endif]-->
-	<script src="/assets/js/main.js"></script>
 
 
   </body>

@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nischay</title>
+    <description>A Security Researcher at Uptycs. Former c0d3_h4cki05_ member.</description>
+    <link>http://localhost:4000//</link>
+    <atom:link href="http://localhost:4000//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 08 Jan 2023 15:14:02 +0530</pubDate>
+    <lastBuildDate>Sun, 08 Jan 2023 15:14:02 +0530</lastBuildDate>
+    <generator>Jekyll v4.3.1</generator>
+    
+     
+      <item>
+        <title>Arab Security Cyber Wargames</title>
+        <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;This CTF was the Qualifier to the finals, and rev was pretty easy. Anyways, for people that might not have understood how to solve certain challenges, this writeup is for them.&lt;/p&gt;
+
+&lt;h2 id=&quot;check&quot;&gt;Check&lt;/h2&gt;
+
+&lt;p&gt;TL;DR: Manipulate environment variables for fun and flags&lt;/p&gt;
+
+&lt;p&gt;I got this challenge while the main server was down, in the github. Let’s take a quick look in IDA.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/1.png&quot; alt=&quot;The important function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can see that it uses &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getenv&lt;/code&gt; to get the value of some environment variable, and then it XOR decodes the actual value that it needs to be. The XOR’ing happens in functions like this one.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/2.png&quot; alt=&quot;XOR&apos;ing function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There was no actual need to find out what it’s XOR’ing with, because in the end, there’s a strcmp with the input value anyways, so this didn’t require a lot of thinking.
+By decoding the values in this way, we get the following values for the environment variables:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HOSTNAME=Machine&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;USER=reenigne&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Sure enough,&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/3.png&quot; alt=&quot;Result&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The flag is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ASCWG{3nv_v4r5_4r3_u53ful}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;doom&quot;&gt;DOOM&lt;/h2&gt;
+
+&lt;p&gt;TL;DR: Crack an MD5 Hash.&lt;/p&gt;
+
+&lt;p&gt;Once you open the binary in IDA, you see the helpfully named functions, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getString&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;printFlag&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;verifyFlag&lt;/code&gt;. Getting to verifyFlag isn’t that hard, either. Just change &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EIP&lt;/code&gt; at the right moment and you’re good to go!&lt;/p&gt;
+
+&lt;p&gt;The binary reads a file called string.txt, probably where we need to put the flag to check it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/4.png&quot; alt=&quot;readString&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, we can see the binary taking the MD5 of something, probably our input.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/5.png&quot; alt=&quot;MD5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is what it’s comparing it with:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/6.png&quot; alt=&quot;actual hash&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now it’s just a matter of getting the hash and cracking it.&lt;/p&gt;
+
+&lt;p&gt;The hash is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;B9448DD62F8F39451767741F799C8D8B&lt;/code&gt; and crackstation tells me that it’s an MD5 hash of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apocolypsedoomsday&lt;/code&gt;. Bingo!&lt;/p&gt;
+
+&lt;p&gt;Sure enough, the flag is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ASCWG{apocolypsedoomsday}&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/7.png&quot; alt=&quot;flag found&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;key&quot;&gt;Key&lt;/h2&gt;
+
+&lt;p&gt;This one was a rust challenge in Windows, and I suck at both. It was therefore kinda reassuring that me studying this stuff had an effect.&lt;/p&gt;
+
+&lt;p&gt;Since this is a rust chall, there’s a lot of stuff happening. The most important parts are often hidden somewhere deep in the code. I’m a noob and not competent at stuff like Lighthouse, and so I decided to not learn something in the middle of a CTF and go with my guts.&lt;/p&gt;
+
+&lt;p&gt;This binary seems to be asking for parameters from argv, and therefore, I put 16 bits of input.&lt;/p&gt;
+
+&lt;p&gt;Now, onto the interesting bit:&lt;/p&gt;
+
+&lt;p&gt;Somewhere deep in the function, we come across this bit of code:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/8.png&quot; alt=&quot;checker&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, to my non-rust-programmer head, this looked exactly like a checker in C:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if(!cond1){
+    if(!cond2){
+        if(!cond3){
+            // fail
+        }   
+    }
+}
+else{
+   // goodboy
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Therefore, I decided to make sense of it and make a Z3py script to take care of the majority of finding out the values.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from z3 import Int, Solver, solve, Xor, BitVec, And
+
+a = [BitVec(&apos;a%s&apos; %i,16) for i in range(16)]
+s = Solver()
+
+s.add(a[0] == 2*a[7])
+s.add(a[1] == 48)
+s.add(a[2] == 52)
+s.add(a[3] == 50)
+s.add(a[9] == 38)
+s.add(a[4] == a[7] - 7)
+s.add(a[4] &amp;amp; 0xf4 == 36)
+s.add(0x5a ^ a[5] == 113)
+s.add(a[7] == 45)
+s.add(a[6] == (a[5] | 0x7e))
+s.add(a[8] == 66)
+s.add(a[10] == 83)
+s.add(a[11] == 92)
+s.add(a[12] + a[6] == 0x89) #-119?
+s.add(a[13] == (0x5a &amp;amp; 0x26 ^ 0x42))
+s.add(a[14] == 40)
+s.add(a[15] == 41)
+
+
+print(s.check())
+print(s.model())
+m = s.model()
+
+b= []
+for i in range(16):
+    b.append(chr(int(m[a[i]].as_string())))
+c = &apos;&apos;.join(b)
+print(c)
+for i in range(16):
+    print(i,b[i])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, if you run this script, you’ll find that a[6] and a[12] are left undefined. That’s because I couldn’t figure out a way to statically get those values, and had to get it using other ways, i.e., dynamic debugging.&lt;/p&gt;
+
+&lt;p&gt;Anyways, the key turns out to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Z042&amp;amp;+~-B&amp;amp;S\/@()&lt;/code&gt; and the flag is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ASCWG{RustyRevEngineer}&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ascwg/9.png&quot; alt=&quot;done&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading until now, and my teammates will probably upload their writeups soon in their respective blogs/github.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 15 Aug 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/08/15/ascwg.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/08/15/ascwg.html</guid>
+        
+        
+      </item>
+      
+    
+     
+      <item>
+        <title>PoseidonCTF</title>
+        <description>&lt;h1 id=&quot;intro&quot;&gt;Intro&lt;/h1&gt;
+
+&lt;p&gt;Well, I screwed up. I was only able to solve only one rev chall, their warmup. I guess it’s normal for a n00b like me, though.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-large-cherries&quot;&gt;The Large Cherries&lt;/h2&gt;
+
+&lt;p&gt;We’re given a file called Lao-Tzu.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/poseidon/1.png&quot; alt=&quot;ptrace reeee&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There’s a ptrace at the very top, so if you bypass it, you will see that:&lt;/p&gt;
+
+&lt;p&gt;It asks for two kinds of inputs, and for the first time, it asks for 9 characters and 10 characters the second time.&lt;/p&gt;
+
+&lt;p&gt;The first input is sent to this function, called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;magic_word&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/poseidon/2.png&quot; alt=&quot;magick&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The function essentially makes sure that certain conditions are met for input[0] to input[7], even though the input asks for 9 characters. This is our key to solving this chall.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from z3 import Solver, Xor, BitVec
+
+a = [BitVec(&apos;a%s&apos; % i,64 ) for i in range(9)]
+
+s = Solver()
+s.add(a[3] + a[0] == 0xab)
+s.add(a[3] == 0x37)
+s.add(a[2] ^ a[1] == 0x5d)
+s.add(a[4] - a[2] == 5)
+s.add(a[6] + a[4] == 0xa2)
+s.add(a[5] == a[6])
+s.add(a[6] == 0x30)
+s.add(a[7] == 0x7a)
+s.check()
+m = s.model()
+print(s.model())
+b= []
+for i in range(8):
+    b.append(chr(int(m[a[i]].as_string())))
+c = &apos;&apos;.join(b)
+print(c)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now, this piece of code gives out &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t0m7r00z&lt;/code&gt;, which is only 8 characters. This will be important later.&lt;/p&gt;
+
+&lt;p&gt;The second piece of input is a 10 character input, that checks if all of the characters add up to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x294&lt;/code&gt;, i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;660&lt;/code&gt;. That happens to be the sum of digital sum of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t0m7r00z&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Therefore, we need to add something extra to the mix. This character can be quite literally anything, and I just typed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t0m7r00za&lt;/code&gt; as both inputs.&lt;/p&gt;
+
+&lt;p&gt;Flag: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Poseidon{Its_L3_t3Mp5_DeS_C3r1s35}&lt;/code&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 10 Aug 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/08/10/PoseidonCTF.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/08/10/PoseidonCTF.html</guid>
+        
+        
+      </item>
+      
+    
+     
+      <item>
+        <title>NoobCTF 0x1</title>
+        <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;All of the reversing challenges in this CTF were packed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upx&lt;/code&gt;. Therefore, I’ll be talking about only the decrypted versions of these challenges. All of them were decrypted with the simple command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upx -d infile -o outfile&lt;/code&gt;. All of them are also Rust challenges that were more or less solved by traversing around it to invoke a certain function.&lt;/p&gt;
+
+&lt;h1 id=&quot;stringcrack&quot;&gt;Stringcrack&lt;/h1&gt;
+
+&lt;p&gt;Question: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;The String is all you have&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Points: 150&lt;/p&gt;
+
+&lt;h2 id=&quot;short-writeup&quot;&gt;Short Writeup&lt;/h2&gt;
+
+&lt;p&gt;Get into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StringCrack::crack1&lt;/code&gt; function and change ZF two times to get into the right method that prints out the flag&lt;/p&gt;
+
+&lt;h2 id=&quot;flag&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;noob{n0boot0br00t}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;lenrev&quot;&gt;Lenrev&lt;/h1&gt;
+
+&lt;p&gt;Question: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Crack | Compare | Bypass&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Points: 200&lt;/p&gt;
+
+&lt;h2 id=&quot;short-writeup-1&quot;&gt;Short Writeup&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lenrev::crack&lt;/code&gt; is the function where the flag is. Traverse to that function and bypass an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if&lt;/code&gt; condition, and you’ll get the flag.&lt;/p&gt;
+
+&lt;h2 id=&quot;flag-1&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;noob{bufferr34d}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;replacefunc&quot;&gt;ReplaceFunc&lt;/h1&gt;
+
+&lt;p&gt;Question: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Crack and redirect your way to the top of the hill&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Points: 200&lt;/p&gt;
+
+&lt;h2 id=&quot;short-writeup-2&quot;&gt;Short Writeup&lt;/h2&gt;
+
+&lt;p&gt;The flag is in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replacefunc::function1&lt;/code&gt; and can be printed out by changing one ZF.&lt;/p&gt;
+
+&lt;h2 id=&quot;flag-2&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;noob{easybyp4ss}&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 10 Jun 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/06/10/NoobCTF0x1.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/06/10/NoobCTF0x1.html</guid>
+        
+        
+      </item>
+      
+    
+     
+      <item>
+        <title>Houseplant CTF</title>
+        <description>&lt;p&gt;I was able to solve 8/10 of these challs, so that’s kinda nice.&lt;/p&gt;
+
+&lt;h1 id=&quot;fragile&quot;&gt;Fragile&lt;/h1&gt;
+
+&lt;h2 id=&quot;question&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;Can you help me move my stuff? This one’s fragile!&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;p&gt;This is the important code:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static boolean check(String input){
+        boolean h = false;
+        String flag = &quot;h1_th3r3_1ts_m3&quot;;
+        String theflag = &quot;&quot;;
+        if(input.length() != flag.length()){
+            return false;
+        }
+        for(int i = 0; i &amp;lt; flag.length(); i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i)));
+        }
+        return theflag.equals(&quot;ÐdØÓ^y§å^rÍaèÒÁ¡^w&quot;);
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here, we can see that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;theflag.equals()&lt;/code&gt; doesn’t really have ASCII codes. Therefore, it’d be better to get the values as properly as possible. Therefore, I switched to Kate and copied the final &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;theflag&lt;/code&gt; value.
+The final value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;theflag&lt;/code&gt; is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ÐdØÓ§åÍaèÒÁ¡&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This function is basically adding every char in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;input&lt;/code&gt; to the corresponding character in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flag&lt;/code&gt; and checking if it is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ÐdØÓ§åÍaèÒÁ¡&lt;/code&gt;.
+Therefore, we just need to subtract.&lt;/p&gt;
+
+&lt;h2 id=&quot;exploit&quot;&gt;Exploit&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;thefinalflag = &quot;ÐdØÓ§åÍaèÒÁ¡&quot;
+flag = &quot;h1_th3r3_1ts_m3&quot;
+
+for i in range(len(flag)):
+	print(chr(ord(thefinalflag[i])-ord(flag[i])),end=&apos;&apos;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This gives out: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;h3y_1ts_n0t_b4d&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;flag&quot;&gt;Flag&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rtcp{h3y_1ts_n0t_b4d}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;breakable&quot;&gt;Breakable&lt;/h1&gt;
+
+&lt;h2 id=&quot;question-1&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;Okay…this one’s better, but still be careful!&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup-1&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;p&gt;This is the checker function:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static boolean check(String input){
+        boolean h = false;
+        String flag = &quot;k33p_1t_in_pl41n&quot;;
+        String theflag = &quot;&quot;;
+        int i = 0;
+        if(input.length() != flag.length()){
+            return false;
+        }
+        for(i = 0; i &amp;lt; flag.length()-2; i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i+2)));
+        }
+        for(i = 2; i &amp;lt; flag.length(); i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i-2)));
+        }
+        String[] flags = theflag.split(&quot;&quot;);
+        for(; i &amp;lt; (int)((flags.length)/2); i++){
+            flags[i] = Character.toString((char)((int)(flags[i].charAt(0)) + 20));
+        }
+        return theflag.equals(&quot;Ò^rdÝ¾¤¤¾Ùà^oåÐ^scÝÆ^p¥ÌÈá^oÏÜ¦aã&quot;);
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Again, let’s get the &lt;em&gt;real&lt;/em&gt; value of theflag. The real value of theflag is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ÒdÝ¾¤¤¾ÙàåÐcÝÆ¥ÌÈáÏÜ¦aã&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, we need to reverse it. The last for loop seems to go from i=2 to flag.length and the first for loop goes from 0 to flag.length-2. Therefore, we know that theflag has input[2:] in the latter half of it, and it has input[:-2] in the first half.&lt;/p&gt;
+
+&lt;p&gt;Therefore, we need to reverse those two things to get the flag.&lt;/p&gt;
+
+&lt;h2 id=&quot;exploit-1&quot;&gt;Exploit&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;realflag = [&apos;0&apos; for i in range(16)]
+flag = &quot;k33p_1t_in_pl41n&quot;
+for i in range(0,len(flag)-2):
+	realflag[i+2] = chr(ord(a[i]) - ord(flag[i]))
+for i in range(2,len(flag)):
+	realflag[i-2] = chr(ord(a[i+len(flag)-4]) - ord(flag[i]))
+print(&quot;rtcp{&quot;+&apos;&apos;.join(realflag)+&quot;}&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;flag-1&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rtcp{0mg_1m_s0_pr0ud_}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;bendy&quot;&gt;Bendy&lt;/h1&gt;
+
+&lt;h2 id=&quot;question-2&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;I see you’ve found my straw collection…(this is the last excessive for loop one i swear)&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup-2&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    public static boolean check(String input){
+        boolean h = false;
+        String flag = &quot;r34l_g4m3rs_eXclus1v3&quot;;
+        String theflag = &quot;&quot;;
+        int i = 0;
+        if(input.length() != flag.length()){
+            return false;
+        }
+        for(i = 0; i &amp;lt; flag.length()-14; i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i+8)));
+        }
+        for(i = 10; i &amp;lt; flag.length()-6; i++){
+            theflag += (char)((int)(flag.charAt(i)) + (int)(input.charAt(i-8)));
+        }
+        for(; i &amp;lt; flag.length(); i++){
+            theflag += (char)((int)(flag.charAt(i-3)) + (int)(input.charAt(i)));
+        }
+        //Ò^rdÝ¾¤¤¾Ùà^oåÐ^scÝÆ^p¥ÌÈá^oÏÜ¦aã
+        String[] flags = theflag.split(&quot;&quot;);
+        for(i=0; i &amp;lt; (int)((flags.length)/2); i++){
+            flags[i] = Character.toString((char)((int)(flags[i].charAt(0)) + 20));
+        }
+        theflag = theflag.substring(flags.length/2);
+        for(int k = 0; k &amp;lt; ((flags.length)/2); k++){
+            theflag += flags[k];
+        }
+        return theflag.equals(&quot;ÄÑÓ¿ÂÒêáøz§è§ñy÷¦&quot;);
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;(This chall is the old version, btw)&lt;/p&gt;
+
+&lt;p&gt;The first for loop will encode (sort of) input[:6], and the second loop will encode [2:7] and the third one encodes input[15:].&lt;/p&gt;
+
+&lt;h2 id=&quot;exploit-2&quot;&gt;Exploit&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;start_junk = &quot;ÄÑÓ¿ÂÒêáøz§è§ñy÷¦&quot;
+med_junk = &quot;&quot;
+for i in range(len(start_junk)//2,len(start_junk)):
+	med_junk += chr(ord(start_junk[i])-20)
+med_junk += start_junk[:len(start_junk)//2]
+print(med_junk)
+flag = &quot;r34l_g4m3rs_eXclus1v3&quot;
+ree = [&apos;/&apos; for i in range(21)]
+ree_count = 0
+for i in range(0,len(flag)-14):
+	print(ree_count)
+	ree[i+8] = chr(ord(med_junk[ree_count]) - ord(flag[i]))
+	ree_count += 1
+for i in range(10,len(flag)-6):
+	ree[i-8] = chr(ord(med_junk[ree_count]) - ord(flag[i]))
+	ree_count += 1
+for i in range(len(flag)-6, len(flag)):
+	ree[i] = chr(ord(med_junk[ree_count]) - ord(flag[i-3]))
+	ree_count += 1
+print(&apos;&apos;.join(ree))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;(sorry for the variable names, I was frustrated)&lt;/p&gt;
+
+&lt;p&gt;Also you need to guess some of the flag.&lt;/p&gt;
+
+&lt;h2 id=&quot;flag-2&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rtcp{h0p3_y0ur3_h4v1ng_fun}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;ez&quot;&gt;EZ&lt;/h1&gt;
+
+&lt;h2 id=&quot;question-3&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;I made a password system, bet you can’t get the flag&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup-3&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;p&gt;The flag is in a comment. Honestly.&lt;/p&gt;
+
+&lt;h2 id=&quot;flag-3&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rtcp{tH1s_i5_4_r3aL_fL4g_s0_Do_sUbm1T_1t!}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;pz&quot;&gt;PZ&lt;/h1&gt;
+
+&lt;h2 id=&quot;question-4&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;Ok, I think I made it slightly better. Now you won’t get the flag this time!&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup-4&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;p&gt;Again, literally in the code.&lt;/p&gt;
+
+&lt;h2 id=&quot;output&quot;&gt;Output&lt;/h2&gt;
+
+&lt;p&gt;(Because of course I want to show uwuspeak).&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[kek@tlh PZ]$ python pass1.py 
+Enter the password: rtcp{iT5_s1mPlY_1n_tH3_C0d3}
+Unlocked. The flag is the password.
+b-but i wunna show off my catswpeak uwu~... why wont you let me do my nya!!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;lemon&quot;&gt;LEMON&lt;/h1&gt;
+
+&lt;h2 id=&quot;question-5&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;Fine. I made it a bit more secure by not just leaving it directly in the code.&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup-5&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;p&gt;Build together the loose bits.&lt;/p&gt;
+
+&lt;h2 id=&quot;flag-4&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rtcp{y34H_tHiS_a1nT_sEcuR3}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;squeezy&quot;&gt;SQUEEZY&lt;/h1&gt;
+
+&lt;h2 id=&quot;question-6&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;Ok this time, you aren’t getting anywhere near anything.&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup-6&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;p&gt;This XOR’s every element in key, with userinput.&lt;/p&gt;
+
+&lt;h2 id=&quot;exploit-3&quot;&gt;Exploit&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;a = &quot;\x1f\x11\x0c\x07\x15\x00Q\x18:#D\x08-&amp;gt;\x14U\x1a%1\x01Q\x1f:$D\x17&amp;amp;\x03(\r^\x19*X\x1c&quot;
+key = &quot;meownyameownyameownyameownyameownya&quot;
+print(&apos;&apos;.join(chr(ord(a)^ord(b)) for a,b in zip(a,key)))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;flag-5&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rtcp{y0u_L3fT_y0uR_x0r_K3y_bEh1nD!}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;thedanzman&quot;&gt;thedanzman&lt;/h1&gt;
+
+&lt;h2 id=&quot;question-7&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;Fine. I made it even harder. It is now no longer “ez”, “pz”, “lemon” or “squeezy”.
+You will never get the flag this time.&lt;/p&gt;
+
+&lt;h2 id=&quot;writeup-7&quot;&gt;Writeup&lt;/h2&gt;
+
+&lt;p&gt;This chall does the following things:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Take user input.&lt;/li&gt;
+  &lt;li&gt;use a key.&lt;/li&gt;
+  &lt;li&gt;encode key with rot_13&lt;/li&gt;
+  &lt;li&gt;xor every part of input with rot_13’d key&lt;/li&gt;
+  &lt;li&gt;base64 encode the result&lt;/li&gt;
+  &lt;li&gt;rot_13 it&lt;/li&gt;
+  &lt;li&gt;reverse it&lt;/li&gt;
+  &lt;li&gt;check if it is equal to “‘=ZkXipjPiLIXRpIYTpQHpjSQkxIIFbQCK1FR3DuJZxtPAtkR’o”&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Therefore we need to do the exact reverse of it.&lt;/p&gt;
+
+&lt;h2 id=&quot;exploit-4&quot;&gt;Exploit&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import codecs
+
+given_bytes = &quot;&apos;=ZkXipjPiLIXRpIYTpQHpjSQkxIIFbQCK1FR3DuJZxtPAtkR&apos;o&quot;[::-1]
+given_bytes = codecs.decode(given_bytes,&apos;rot_13&apos;)
+given_str = codecs.decode(bytes(given_bytes[2:-1],&apos;ascii&apos;),&apos;base64&apos;).decode(&apos;ascii&apos;)
+key = codecs.encode(&quot;nyameowpurrpurrnyanyapurrpurrnyanya&quot;,&apos;rot_13&apos;)
+print(&apos;&apos;.join(chr(ord(a)^ord(b)) for a,b in zip(key,given_str)))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;flag-6&quot;&gt;Flag&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rtcp{n0w_tH4T_w45_m0r3_cH4lL3NgiNG}&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 28 Apr 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/04/28/Houseplant.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/04/28/Houseplant.html</guid>
+        
+        
+      </item>
+      
+    
+     
+      <item>
+        <title>WPICTF 2020</title>
+        <description>&lt;h1 id=&quot;danger-live-and-malicious-code&quot;&gt;danger-Live-and-Malicious-Code&lt;/h1&gt;
+
+&lt;h2 id=&quot;question&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;Like the title says, this challenge is dangerous and contains live malware.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-malicious-code&quot;&gt;The malicious code:&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = [&apos;ps:&apos;,&apos;cte&apos;,&apos;5df&apos;,&apos;se_&apos;,&apos;toS&apos;,&apos;ing&apos;,&apos;tri&apos;,&apos;sub&apos;,&apos;lac&apos;,&apos;ryt&apos;,&apos;d}.&apos;,&apos;cod&apos;,&apos;pro&apos;,&apos;_no&apos;,&apos;ran&apos;,&apos;ing&apos;,&apos;dom&apos;,&apos;str&apos;,&apos;ete&apos;,&apos;rep&apos;];function abc(def) {
+popupWindow = window.open( def,&apos;popUpWindow&apos;,&apos;height=666,width=666,left=666,top=666&apos;) }(function(c, d) {var e = function(f) {while (--f) {c[&apos;push&apos;](c[&apos;shift&apos;]());}};e(++d);}(a, 0xa8));var b = function(c, d) {c = c - 0x0;var e = a[c];return e;};var c = &apos;htt&apos; + b(&apos;0xc&apos;) + &apos;//t&apos; + b(&apos;0x1&apos;) + b(&apos;0xe&apos;) + &apos;xc-&apos; + &apos;rWP&apos; + &apos;I&apos;;var d = &apos;{Oh&apos; + b(&apos;0x5&apos;) + b(&apos;0xf&apos;) + b(&apos;0x4&apos;) + b(&apos;0x3&apos;) + b(&apos;0x7&apos;) + &apos;_d&apos;;var e = b(&apos;0xa&apos;) + b(&apos;0xd&apos;) + b(&apos;0x2&apos;) + &apos;net&apos; + &apos;/&apos;;var f = Math[b(&apos;0x6&apos;) +
+b(&apos;0x8&apos;)]()[b(&apos;0x10&apos;) + b(&apos;0x12&apos;) + &apos;ng&apos;](0x6)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf) + Math[&apos;ran&apos; + &apos;dom&apos;]()[b(&apos;0x10&apos;) + b(&apos;0x12&apos;) + &apos;ng&apos;](0x10)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf);var g = Math[&apos;ran&apos; + &apos;dom&apos;]()[b(&apos;0x10&apos;) +
+b(&apos;0x12&apos;) + &apos;ng&apos;](0x24)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf) + Math[b(&apos;0x6&apos;) + b(&apos;0x8&apos;)]()[&apos;toS&apos; + b(&apos;0x12&apos;) + &apos;ng&apos;](0x24)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf);/*location[b(&apos;0xb&apos;) + b(&apos;0x0&apos;) + &apos;e&apos;](c + d + e + &apos;?&apos; + f + &apos;=&apos; + g);*/for(var i=1;i===i;i++){abc(self.location,&apos;_blank&apos;);}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;what-i-did&quot;&gt;What I did:&lt;/h2&gt;
+
+&lt;p&gt;So I had to first of all, beautify the code, so that I could make any sense out of it.&lt;/p&gt;
+
+&lt;p&gt;That’s what I did. Beautified code:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = [&apos;ps:&apos;, &apos;cte&apos;, &apos;5df&apos;, &apos;se_&apos;, &apos;toS&apos;, &apos;ing&apos;, &apos;tri&apos;, &apos;sub&apos;, &apos;lac&apos;, &apos;ryt&apos;, &apos;d}.&apos;, &apos;cod&apos;, &apos;pro&apos;, &apos;_no&apos;, &apos;ran&apos;, &apos;ing&apos;, &apos;dom&apos;, &apos;str&apos;, &apos;ete&apos;, &apos;rep&apos;];
+
+function abc(def) {
+    popupWindow = window.open(def, &apos;popUpWindow&apos;, &apos;height=666,width=666,left=666,top=666&apos;)
+}(function(c, d) {
+    var e = function(f) {
+        while (--f) {
+            c[&apos;push&apos;](c[&apos;shift&apos;]());
+        }
+    };
+    e(++d);
+}(a, 0xa8));
+var b = function(c, d) {
+    c = c - 0x0;
+    var e = a[c];
+    return e;
+};
+var c = &apos;htt&apos; + b(&apos;0xc&apos;) + &apos;//t&apos; + b(&apos;0x1&apos;) + b(&apos;0xe&apos;) + &apos;xc-&apos; + &apos;rWP&apos; + &apos;I&apos;;
+var d = &apos;{Oh&apos; + b(&apos;0x5&apos;) + b(&apos;0xf&apos;) + b(&apos;0x4&apos;) + b(&apos;0x3&apos;) + b(&apos;0x7&apos;) + &apos;_d&apos;;
+var e = b(&apos;0xa&apos;) + b(&apos;0xd&apos;) + b(&apos;0x2&apos;) + &apos;net&apos; + &apos;/&apos;;
+var f = Math[b(&apos;0x6&apos;) + b(&apos;0x8&apos;)]()[b(&apos;0x10&apos;) + b(&apos;0x12&apos;) + &apos;ng&apos;](0x6)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf) + Math[&apos;ran&apos; + &apos;dom&apos;]()[b(&apos;0x10&apos;) + b(&apos;0x12&apos;) + &apos;ng&apos;](0x10)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf);
+var g = Math[&apos;ran&apos; + &apos;dom&apos;]()[b(&apos;0x10&apos;) + b(&apos;0x12&apos;) + &apos;ng&apos;](0x24)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf) + Math[b(&apos;0x6&apos;) + b(&apos;0x8&apos;)]()[&apos;toS&apos; + b(&apos;0x12&apos;) + &apos;ng&apos;](0x24)[b(&apos;0x13&apos;) + b(&apos;0x9&apos;) + b(&apos;0x11&apos;)](0x2, 0xf); /*location[b(&apos;0xb&apos;) + b(&apos;0x0&apos;) + &apos;e&apos;](c + d + e + &apos;?&apos; + f + &apos;=&apos; + g);*/
+for (var i = 1; i === i; i++) {
+    abc(self.location, &apos;_blank&apos;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, you don’t really need to know what’s happening behind the scenes, but you can just change the function abc to just console.log all the variables. The flag is split between c,d, and e, so that’s all you need.
+Just changing the code to console.log variables and changing the for loop, so that it doesn’t run forever, you can get the flag.&lt;/p&gt;
+
+&lt;h2 id=&quot;flag&quot;&gt;FLAG&lt;/h2&gt;
+&lt;p&gt;WPI{Oh_nose_procoding_detected}&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 20 Apr 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/04/20/WPICTF.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/04/20/WPICTF.html</guid>
+        
+        
+      </item>
+      
+    
+     
+      <item>
+        <title>Sora</title>
+        <description>&lt;h1 id=&quot;question&quot;&gt;Question&lt;/h1&gt;
+
+&lt;p&gt;This obnoxious kid with spiky hair keeps telling me his key can open all doors.&lt;/p&gt;
+
+&lt;p&gt;Can you generate a key to open this program before he does?&lt;/p&gt;
+
+&lt;h1 id=&quot;writeup&quot;&gt;Writeup&lt;/h1&gt;
+
+&lt;p&gt;On the top is the main function. It’s a pretty simple program, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;encrypt&lt;/code&gt; runs on the main program, and then if the result of encrypt is 0, probably to indicate success, the flag is printed, otherwise it’s not.&lt;/p&gt;
+
+&lt;p&gt;Let’s have a peek into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;encrypt&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/sora/encrypt.png&quot; alt=&quot;sym.encrypt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, we can see that stuff is done to the input (namely, each character in input is multipled by 8, then 19 is added to it, which is then modded with 61, with 65 finally being added to it), and it is compared with the corresponding element in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secret&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;From the program, we can see that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secret&lt;/code&gt; is a string with the value &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&apos;aQLpavpKQcCVpfcg&apos;&lt;/code&gt;. I made a python script that basically iterates over all letters to get the required input.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ciphertext = &quot;aQLpavpKQcCVpfcg&quot;
+for i in ciphertext:
+	for j in range(ord(&apos;A&apos;),ord(&apos;z&apos;):
+		if (j*8 + 0x13) % 0x3d + 0x41 == ord(i):
+			print(chr(j),end=&apos;&apos;)
+			break
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I know the code isn’t the cleanest, but it’s easy and gets the job done so &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;¯\_(ツ)_/¯&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;You get the pasword, which is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;try_to_break_meG&quot;&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 08 Apr 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/04/08/sora.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/04/08/sora.html</guid>
+        
+        
+      </item>
+      
+    
+     
+      <item>
+        <title>Mr_Game_and_watch</title>
+        <description>&lt;h1 id=&quot;question&quot;&gt;Question&lt;/h1&gt;
+&lt;p&gt;My friend is learning some wacky new interpreted language and different hashing algorithms. He’s hidden a flag inside this program but I cant find it…&lt;/p&gt;
+
+&lt;h1 id=&quot;writeup&quot;&gt;Writeup&lt;/h1&gt;
+
+&lt;p&gt;TODO&lt;/p&gt;
+</description>
+        <pubDate>Wed, 08 Apr 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/04/08/mr-game.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/04/08/mr-game.html</guid>
+        
+        
+      </item>
+      
+    
+     
+      <item>
+        <title>Cracker Barrel</title>
+        <description>&lt;h1 id=&quot;cracker-barrel-50-points-at-the-end&quot;&gt;Cracker Barrel (50 points at the end)&lt;/h1&gt;
+
+&lt;h2 id=&quot;question&quot;&gt;Question&lt;/h2&gt;
+
+&lt;p&gt;I found a USB drive under the checkers board at cracker barrel. My friends told me not to plug it in but surely nothing bad is on it?&lt;/p&gt;
+
+&lt;p&gt;I found this file, but I can’t seem to unlock it’s secrets. Can you help me out?&lt;/p&gt;
+
+&lt;p&gt;Also.. once you think you’ve got it I think you should try to connect to challenges.auctf.com at port 30000 not sure what that means, but it written on the flash drive..&lt;/p&gt;
+
+&lt;p&gt;Original Author: nadrojisk&lt;/p&gt;
+
+&lt;h2 id=&quot;long-writeup&quot;&gt;Long Writeup&lt;/h2&gt;
+
+&lt;p&gt;There’s a section called check, which uses three parts (check_1, check_2, and check_3).&lt;/p&gt;
+
+&lt;p&gt;Keep in mind that the CTF uses sym.remove_newline, which basically changes ‘\n’ to ‘\0’. Therefore, if there are two opposing things, just type the first one, and the second one does &lt;strong&gt;NOT&lt;/strong&gt; matter since &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strcmp&lt;/code&gt; only checks till the next ‘\0’.&lt;/p&gt;
+
+&lt;p&gt;So, here’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;check_1&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/cracker/check_1.png&quot; alt=&quot;check_1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This checks if arg1 is equal to “starwars”, and then exits if it’s true.&lt;/p&gt;
+
+&lt;p&gt;Here’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;check_2&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/cracker/check_2.png&quot; alt=&quot;check_2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Basically checks if arg1 is equal to the reverse of “si siht egassem terces”, which i “secret message this is”&lt;/p&gt;
+
+&lt;p&gt;Here’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;check_3&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/cracker/check_3.png&quot; alt=&quot;check_3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This runs two loops:&lt;/p&gt;
+
+&lt;p&gt;One, that compares the values of each element of the array &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arg1&lt;/code&gt; with an array iVar3 with an offset of 22.
+In the second loop, the checking function gives &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt; when the check is not equal. (The required boolean is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt; here).&lt;/p&gt;
+
+&lt;p&gt;Since the check is only for the length of the input, we can input whatever little input we want to.&lt;/p&gt;
+
+&lt;p&gt;So, finding the value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chr(0x7a - 2^0x14)&lt;/code&gt;, we have lowercase “l”. This is the third input.&lt;/p&gt;
+
+&lt;p&gt;And that gives us the flag.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 06 Apr 2020 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2020/04/06/cracker.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2020/04/06/cracker.html</guid>
+        
+        
+      </item>
+      
+    
+  </channel>
+</rss>
+

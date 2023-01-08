@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 
 <head>
 	<title>Houseplant CTF | Nischay</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
 	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
 	<link rel="stylesheet" href="/assets/css/main.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/brands.css">
 	<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
 	<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
 </head>
@@ -19,18 +15,11 @@
 
 <body>
 
-    <!-- Wrapper -->
-<div id="wrapper">
-
-<!-- Header -->
-<header id="header">
-	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>
-	<nav>
-		<a href="#menu">Menu</a>
-	</nav>
+    <!-- Header -->
+<!--<header id="header">
+	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>-->
 </header>
-
-<!-- Menu -->
+<!--
 <nav id="menu">
 	<ul class="links">
         
@@ -41,10 +30,10 @@
 		    
 		
 		    
-		        <li><a href="/">Home</a></li>
-	    	
 		
 		    
+		        <li><a href="/">Home</a></li>
+	    	
 		
 		
 		    
@@ -60,16 +49,47 @@
 		    
 		
 	</ul>
-	<ul class="actions vertical">
-		<li><a href="#" class="button special fit">Get Started</a></li>
-		<li><a href="#" class="button fit">Log In</a></li>
-	</ul>
+</nav>-->
+
+<!-- Sidebar -->
+<nav id="menu">
+	<div class="sidebar">
+        
+		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
+		        <a href="/">Home</a>
+	    	
+		
+		
+		    
+		
+		    
+		        <a href="/all_posts.html">All posts</a>
+		    
+		
+		    
+		        <a href="/arch.html">Linux good</a>
+		    
+		
+		    
+		
+	</div>
 </nav>
- 
-    
-    
+
+<!-- Div with one image in it lol -->
+<div class="name" align="center"><img src="/assets/images/name.png" href="/"></div>
+
+
+
 <!-- Main -->
-<div id="main" class="alt">
+<div id="main" class="alt main">
 
 <!-- One -->
 <section id="one">
@@ -78,6 +98,7 @@
 			<h1>Houseplant CTF</h1>
 		</header>
 		
+		<span class="description"><h3>Description: TODO</h3></span>
 		<p>I was able to solve 8/10 of these challs, so that’s kinda nice.</p>
 
 <h1 id="fragile">Fragile</h1>
@@ -90,7 +111,7 @@
 
 <p>This is the important code:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static boolean check(String input){
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static boolean check(String input){
         boolean h = false;
         String flag = "h1_th3r3_1ts_m3";
         String theflag = "";
@@ -104,24 +125,24 @@
     }
 </code></pre></div></div>
 
-<p>Here, we can see that <code class="highlighter-rouge">theflag.equals()</code> doesn’t really have ASCII codes. Therefore, it’d be better to get the values as properly as possible. Therefore, I switched to Kate and copied the final <code class="highlighter-rouge">theflag</code> value.
-The final value of <code class="highlighter-rouge">theflag</code> is <code class="highlighter-rouge">ÐdØÓ§åÍaèÒÁ¡</code>.</p>
+<p>Here, we can see that <code class="language-plaintext highlighter-rouge">theflag.equals()</code> doesn’t really have ASCII codes. Therefore, it’d be better to get the values as properly as possible. Therefore, I switched to Kate and copied the final <code class="language-plaintext highlighter-rouge">theflag</code> value.
+The final value of <code class="language-plaintext highlighter-rouge">theflag</code> is <code class="language-plaintext highlighter-rouge">ÐdØÓ§åÍaèÒÁ¡</code>.</p>
 
-<p>This function is basically adding every char in <code class="highlighter-rouge">input</code> to the corresponding character in <code class="highlighter-rouge">flag</code> and checking if it is <code class="highlighter-rouge">ÐdØÓ§åÍaèÒÁ¡</code>.
+<p>This function is basically adding every char in <code class="language-plaintext highlighter-rouge">input</code> to the corresponding character in <code class="language-plaintext highlighter-rouge">flag</code> and checking if it is <code class="language-plaintext highlighter-rouge">ÐdØÓ§åÍaèÒÁ¡</code>.
 Therefore, we just need to subtract.</p>
 
 <h2 id="exploit">Exploit</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>thefinalflag = "ÐdØÓ§åÍaèÒÁ¡"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>thefinalflag = "ÐdØÓ§åÍaèÒÁ¡"
 flag = "h1_th3r3_1ts_m3"
 
 for i in range(len(flag)):
 	print(chr(ord(thefinalflag[i])-ord(flag[i])),end='')
 </code></pre></div></div>
-<p>This gives out: <code class="highlighter-rouge">h3y_1ts_n0t_b4d</code></p>
+<p>This gives out: <code class="language-plaintext highlighter-rouge">h3y_1ts_n0t_b4d</code></p>
 
 <h2 id="flag">Flag</h2>
-<p><code class="highlighter-rouge">rtcp{h3y_1ts_n0t_b4d}</code></p>
+<p><code class="language-plaintext highlighter-rouge">rtcp{h3y_1ts_n0t_b4d}</code></p>
 
 <h1 id="breakable">Breakable</h1>
 
@@ -133,7 +154,7 @@ for i in range(len(flag)):
 
 <p>This is the checker function:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static boolean check(String input){
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static boolean check(String input){
         boolean h = false;
         String flag = "k33p_1t_in_pl41n";
         String theflag = "";
@@ -154,7 +175,7 @@ for i in range(len(flag)):
         return theflag.equals("Ò^rdÝ¾¤¤¾Ùà^oåÐ^scÝÆ^p¥ÌÈá^oÏÜ¦aã");
     }
 </code></pre></div></div>
-<p>Again, let’s get the <em>real</em> value of theflag. The real value of theflag is <code class="highlighter-rouge">ÒdÝ¾¤¤¾ÙàåÐcÝÆ¥ÌÈáÏÜ¦aã</code>.</p>
+<p>Again, let’s get the <em>real</em> value of theflag. The real value of theflag is <code class="language-plaintext highlighter-rouge">ÒdÝ¾¤¤¾ÙàåÐcÝÆ¥ÌÈáÏÜ¦aã</code>.</p>
 
 <p>Now, we need to reverse it. The last for loop seems to go from i=2 to flag.length and the first for loop goes from 0 to flag.length-2. Therefore, we know that theflag has input[2:] in the latter half of it, and it has input[:-2] in the first half.</p>
 
@@ -162,7 +183,7 @@ for i in range(len(flag)):
 
 <h2 id="exploit-1">Exploit</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>realflag = ['0' for i in range(16)]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>realflag = ['0' for i in range(16)]
 flag = "k33p_1t_in_pl41n"
 for i in range(0,len(flag)-2):
 	realflag[i+2] = chr(ord(a[i]) - ord(flag[i]))
@@ -173,7 +194,7 @@ print("rtcp{"+''.join(realflag)+"}")
 
 <h2 id="flag-1">Flag</h2>
 
-<p><code class="highlighter-rouge">rtcp{0mg_1m_s0_pr0ud_}</code></p>
+<p><code class="language-plaintext highlighter-rouge">rtcp{0mg_1m_s0_pr0ud_}</code></p>
 
 <h1 id="bendy">Bendy</h1>
 
@@ -183,7 +204,7 @@ print("rtcp{"+''.join(realflag)+"}")
 
 <h2 id="writeup-2">Writeup</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    public static boolean check(String input){
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    public static boolean check(String input){
         boolean h = false;
         String flag = "r34l_g4m3rs_eXclus1v3";
         String theflag = "";
@@ -219,7 +240,7 @@ print("rtcp{"+''.join(realflag)+"}")
 
 <h2 id="exploit-2">Exploit</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>start_junk = "ÄÑÓ¿ÂÒêáøz§è§ñy÷¦"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>start_junk = "ÄÑÓ¿ÂÒêáøz§è§ñy÷¦"
 med_junk = ""
 for i in range(len(start_junk)//2,len(start_junk)):
 	med_junk += chr(ord(start_junk[i])-20)
@@ -247,7 +268,7 @@ print(''.join(ree))
 
 <h2 id="flag-2">Flag</h2>
 
-<p><code class="highlighter-rouge">rtcp{h0p3_y0ur3_h4v1ng_fun}</code></p>
+<p><code class="language-plaintext highlighter-rouge">rtcp{h0p3_y0ur3_h4v1ng_fun}</code></p>
 
 <h1 id="ez">EZ</h1>
 
@@ -261,7 +282,7 @@ print(''.join(ree))
 
 <h2 id="flag-3">Flag</h2>
 
-<p><code class="highlighter-rouge">rtcp{tH1s_i5_4_r3aL_fL4g_s0_Do_sUbm1T_1t!}</code></p>
+<p><code class="language-plaintext highlighter-rouge">rtcp{tH1s_i5_4_r3aL_fL4g_s0_Do_sUbm1T_1t!}</code></p>
 
 <h1 id="pz">PZ</h1>
 
@@ -277,7 +298,7 @@ print(''.join(ree))
 
 <p>(Because of course I want to show uwuspeak).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[kek@tlh PZ]$ python pass1.py 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[kek@tlh PZ]$ python pass1.py 
 Enter the password: rtcp{iT5_s1mPlY_1n_tH3_C0d3}
 Unlocked. The flag is the password.
 b-but i wunna show off my catswpeak uwu~... why wont you let me do my nya!!
@@ -295,7 +316,7 @@ b-but i wunna show off my catswpeak uwu~... why wont you let me do my nya!!
 
 <h2 id="flag-4">Flag</h2>
 
-<p><code class="highlighter-rouge">rtcp{y34H_tHiS_a1nT_sEcuR3}</code></p>
+<p><code class="language-plaintext highlighter-rouge">rtcp{y34H_tHiS_a1nT_sEcuR3}</code></p>
 
 <h1 id="squeezy">SQUEEZY</h1>
 
@@ -309,14 +330,14 @@ b-but i wunna show off my catswpeak uwu~... why wont you let me do my nya!!
 
 <h2 id="exploit-3">Exploit</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a = "\x1f\x11\x0c\x07\x15\x00Q\x18:#D\x08-&gt;\x14U\x1a%1\x01Q\x1f:$D\x17&amp;\x03(\r^\x19*X\x1c"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a = "\x1f\x11\x0c\x07\x15\x00Q\x18:#D\x08-&gt;\x14U\x1a%1\x01Q\x1f:$D\x17&amp;\x03(\r^\x19*X\x1c"
 key = "meownyameownyameownyameownyameownya"
 print(''.join(chr(ord(a)^ord(b)) for a,b in zip(a,key)))
 </code></pre></div></div>
 
 <h2 id="flag-5">Flag</h2>
 
-<p><code class="highlighter-rouge">rtcp{y0u_L3fT_y0uR_x0r_K3y_bEh1nD!}</code></p>
+<p><code class="language-plaintext highlighter-rouge">rtcp{y0u_L3fT_y0uR_x0r_K3y_bEh1nD!}</code></p>
 
 <h1 id="thedanzman">thedanzman</h1>
 
@@ -344,7 +365,7 @@ You will never get the flag this time.</p>
 
 <h2 id="exploit-4">Exploit</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import codecs
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import codecs
 
 given_bytes = "'=ZkXipjPiLIXRpIYTpQHpjSQkxIIFbQCK1FR3DuJZxtPAtkR'o"[::-1]
 given_bytes = codecs.decode(given_bytes,'rot_13')
@@ -355,7 +376,7 @@ print(''.join(chr(ord(a)^ord(b)) for a,b in zip(key,given_str)))
 
 <h2 id="flag-6">Flag</h2>
 
-<p><code class="highlighter-rouge">rtcp{n0w_tH4T_w45_m0r3_cH4lL3NgiNG}</code></p>
+<p><code class="language-plaintext highlighter-rouge">rtcp{n0w_tH4T_w45_m0r3_cH4lL3NgiNG}</code></p>
 
 	</div>
 </section>
@@ -363,10 +384,14 @@ print(''.join(chr(ord(a)^ord(b)) for a,b in zip(key,given_str)))
 </div>
 
     <!-- Contact -->
-<section id="contact">
+<section class="contact">
 	<div class="inner">
 		<section>
-			<form action="https://formspree.io/hegdenischay@gmail.com" method="POST">
+		<h2> Contact me </h2>
+			<form action="https://formkeep.com/f/89c23290a542"
+			accept-charset="UTF-8"
+			enctype="multipart/form-data"
+			method="POST">
 				<div class="field half first">
 					<label for="name">Name</label>
 					<input type="text" name="name" id="name" />
@@ -380,12 +405,12 @@ print(''.join(chr(ord(a)^ord(b)) for a,b in zip(key,given_str)))
 					<textarea name="message" id="message" rows="6"></textarea>
 				</div>
 				<ul class="actions">
-					<li><input type="submit" value="Send Message" class="special" /></li>
-					<li><input type="reset" value="Clear" /></li>
+					<input type="submit" value="Send Message" class="special" />
+					<input type="reset" value="Clear" class="special"/>
 				</ul>
 			</form>
 		</section>
-		<section class="split">
+<!--		<section class="split">
 			<section>
 				<div class="contact-method">
 					<span class="icon alt fa-envelope"></span>
@@ -414,50 +439,42 @@ print(''.join(chr(ord(a)^ord(b)) for a,b in zip(key,given_str)))
 					</span>
 				</div>
 			</section>
-		</section>
+		</section>-->
 	</div>
 </section>
 
 <!-- Footer -->
-	<footer id="footer">
+	<footer id="footer" class="socials">
+	<h2> Socials </h2>
 		<div class="inner">
 			<ul class="icons">
 				
-				<li><a href="https://twitter.com/thatloststudent" class="icon alt fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+				<li><a href="https://twitter.com/thatloststudent" target="_blank"><i class="icon alt twitter"><span class="label">Twitter</span></i></a></li>
 				
 				
-				<li><a href="404.html" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+				<li><a href="https://infosec.exchange/@thatloststudent" class="icon alt mastodon" target="_blank"><span class="label">Fediverse</span></a></li>
 				
 				
-				
-				
-				
-				<li><a href="https://github.com/hegdenischay" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+				<li><a href="https://matrix.to/#/&commat;nischay&colon;nischay&period;me" class="icon alt matrix" target="_black"><img src="/assets/images/icons/matrix.svg" style="width: 40px; max-height:20px;"><span class="label">Matrix</span></a></li>
 				
 				
 				
-				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
 				
-			</ul>
-			<ul class="copyright">
-				<li>&copy; Nischay </li>
-				<li>Design: <a href="https://html5up.net" target="_blank">HTML5 UP</a></li>
-				<li>Jekyll integration: <a href="http://andrewbanchi.ch" target="_blank">Andrew Banchich</a></li>
-
+				
+				
+				
+				
+				<li><a href="https://github.com/hegdenischay" class="icon alt github" target="_blank"><span class="label">GitHub</span></a></li>
+				
+				
+				
+				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+				
 			</ul>
 		</div>
 	</footer>
 
 </div>
-
-<!-- Scripts -->
-	<script src="/assets/js/jquery.min.js"></script>
-	<script src="/assets/js/jquery.scrolly.min.js"></script>
-	<script src="/assets/js/jquery.scrollex.min.js"></script>
-	<script src="/assets/js/skel.min.js"></script>
-	<script src="/assets/js/util.js"></script>
-	<!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js"></script><![endif]-->
-	<script src="/assets/js/main.js"></script>
 
 
 </body>

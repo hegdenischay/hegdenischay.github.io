@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 
 <head>
 	<title>PoseidonCTF | Nischay</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
 	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
 	<link rel="stylesheet" href="/assets/css/main.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/brands.css">
 	<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
 	<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
 </head>
@@ -19,18 +15,11 @@
 
 <body>
 
-    <!-- Wrapper -->
-<div id="wrapper">
-
-<!-- Header -->
-<header id="header">
-	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>
-	<nav>
-		<a href="#menu">Menu</a>
-	</nav>
+    <!-- Header -->
+<!--<header id="header">
+	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>-->
 </header>
-
-<!-- Menu -->
+<!--
 <nav id="menu">
 	<ul class="links">
         
@@ -41,10 +30,10 @@
 		    
 		
 		    
-		        <li><a href="/">Home</a></li>
-	    	
 		
 		    
+		        <li><a href="/">Home</a></li>
+	    	
 		
 		
 		    
@@ -60,16 +49,47 @@
 		    
 		
 	</ul>
-	<ul class="actions vertical">
-		<li><a href="#" class="button special fit">Get Started</a></li>
-		<li><a href="#" class="button fit">Log In</a></li>
-	</ul>
+</nav>-->
+
+<!-- Sidebar -->
+<nav id="menu">
+	<div class="sidebar">
+        
+		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
+		        <a href="/">Home</a>
+	    	
+		
+		
+		    
+		
+		    
+		        <a href="/all_posts.html">All posts</a>
+		    
+		
+		    
+		        <a href="/arch.html">Linux good</a>
+		    
+		
+		    
+		
+	</div>
 </nav>
- 
-    
-    
+
+<!-- Div with one image in it lol -->
+<div class="name" align="center"><img src="/assets/images/name.png" href="/"></div>
+
+
+
 <!-- Main -->
-<div id="main" class="alt">
+<div id="main" class="alt main">
 
 <!-- One -->
 <section id="one">
@@ -77,7 +97,8 @@
 		<header class="major">
 			<h1>PoseidonCTF</h1>
 		</header>
-		<span class="image main"><img src="/assets/images/poseidon/logo.png" alt="" /></span>
+		<span class="image"><img src="/assets/images/poseidon/logo.png" alt="Image describing the post" style="max-height: 100%" /></span>
+		
 		<h1 id="intro">Intro</h1>
 
 <p>Well, I screwed up. I was only able to solve only one rev chall, their warmup. I guess it’s normal for a n00b like me, though.</p>
@@ -92,13 +113,13 @@
 
 <p>It asks for two kinds of inputs, and for the first time, it asks for 9 characters and 10 characters the second time.</p>
 
-<p>The first input is sent to this function, called <code class="highlighter-rouge">magic_word</code>.</p>
+<p>The first input is sent to this function, called <code class="language-plaintext highlighter-rouge">magic_word</code>.</p>
 
 <p><img src="/assets/images/poseidon/2.png" alt="magick" /></p>
 
 <p>The function essentially makes sure that certain conditions are met for input[0] to input[7], even though the input asks for 9 characters. This is our key to solving this chall.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from z3 import Solver, Xor, BitVec
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from z3 import Solver, Xor, BitVec
 
 a = [BitVec('a%s' % i,64 ) for i in range(9)]
 
@@ -120,13 +141,13 @@ for i in range(8):
 c = ''.join(b)
 print(c)
 </code></pre></div></div>
-<p>Now, this piece of code gives out <code class="highlighter-rouge">t0m7r00z</code>, which is only 8 characters. This will be important later.</p>
+<p>Now, this piece of code gives out <code class="language-plaintext highlighter-rouge">t0m7r00z</code>, which is only 8 characters. This will be important later.</p>
 
-<p>The second piece of input is a 10 character input, that checks if all of the characters add up to <code class="highlighter-rouge">0x294</code>, i.e. <code class="highlighter-rouge">660</code>. That happens to be the sum of digital sum of <code class="highlighter-rouge">t0m7r00z</code>.</p>
+<p>The second piece of input is a 10 character input, that checks if all of the characters add up to <code class="language-plaintext highlighter-rouge">0x294</code>, i.e. <code class="language-plaintext highlighter-rouge">660</code>. That happens to be the sum of digital sum of <code class="language-plaintext highlighter-rouge">t0m7r00z</code>.</p>
 
-<p>Therefore, we need to add something extra to the mix. This character can be quite literally anything, and I just typed <code class="highlighter-rouge">t0m7r00za</code> as both inputs.</p>
+<p>Therefore, we need to add something extra to the mix. This character can be quite literally anything, and I just typed <code class="language-plaintext highlighter-rouge">t0m7r00za</code> as both inputs.</p>
 
-<p>Flag: <code class="highlighter-rouge">Poseidon{Its_L3_t3Mp5_DeS_C3r1s35}</code></p>
+<p>Flag: <code class="language-plaintext highlighter-rouge">Poseidon{Its_L3_t3Mp5_DeS_C3r1s35}</code></p>
 
 
 	</div>
@@ -135,10 +156,14 @@ print(c)
 </div>
 
     <!-- Contact -->
-<section id="contact">
+<section class="contact">
 	<div class="inner">
 		<section>
-			<form action="https://formspree.io/hegdenischay@gmail.com" method="POST">
+		<h2> Contact me </h2>
+			<form action="https://formkeep.com/f/89c23290a542"
+			accept-charset="UTF-8"
+			enctype="multipart/form-data"
+			method="POST">
 				<div class="field half first">
 					<label for="name">Name</label>
 					<input type="text" name="name" id="name" />
@@ -152,12 +177,12 @@ print(c)
 					<textarea name="message" id="message" rows="6"></textarea>
 				</div>
 				<ul class="actions">
-					<li><input type="submit" value="Send Message" class="special" /></li>
-					<li><input type="reset" value="Clear" /></li>
+					<input type="submit" value="Send Message" class="special" />
+					<input type="reset" value="Clear" class="special"/>
 				</ul>
 			</form>
 		</section>
-		<section class="split">
+<!--		<section class="split">
 			<section>
 				<div class="contact-method">
 					<span class="icon alt fa-envelope"></span>
@@ -186,50 +211,42 @@ print(c)
 					</span>
 				</div>
 			</section>
-		</section>
+		</section>-->
 	</div>
 </section>
 
 <!-- Footer -->
-	<footer id="footer">
+	<footer id="footer" class="socials">
+	<h2> Socials </h2>
 		<div class="inner">
 			<ul class="icons">
 				
-				<li><a href="https://twitter.com/thatloststudent" class="icon alt fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+				<li><a href="https://twitter.com/thatloststudent" target="_blank"><i class="icon alt twitter"><span class="label">Twitter</span></i></a></li>
 				
 				
-				<li><a href="404.html" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+				<li><a href="https://infosec.exchange/@thatloststudent" class="icon alt mastodon" target="_blank"><span class="label">Fediverse</span></a></li>
 				
 				
-				
-				
-				
-				<li><a href="https://github.com/hegdenischay" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+				<li><a href="https://matrix.to/#/&commat;nischay&colon;nischay&period;me" class="icon alt matrix" target="_black"><img src="/assets/images/icons/matrix.svg" style="width: 40px; max-height:20px;"><span class="label">Matrix</span></a></li>
 				
 				
 				
-				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
 				
-			</ul>
-			<ul class="copyright">
-				<li>&copy; Nischay </li>
-				<li>Design: <a href="https://html5up.net" target="_blank">HTML5 UP</a></li>
-				<li>Jekyll integration: <a href="http://andrewbanchi.ch" target="_blank">Andrew Banchich</a></li>
-
+				
+				
+				
+				
+				<li><a href="https://github.com/hegdenischay" class="icon alt github" target="_blank"><span class="label">GitHub</span></a></li>
+				
+				
+				
+				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+				
 			</ul>
 		</div>
 	</footer>
 
 </div>
-
-<!-- Scripts -->
-	<script src="/assets/js/jquery.min.js"></script>
-	<script src="/assets/js/jquery.scrolly.min.js"></script>
-	<script src="/assets/js/jquery.scrollex.min.js"></script>
-	<script src="/assets/js/skel.min.js"></script>
-	<script src="/assets/js/util.js"></script>
-	<!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js"></script><![endif]-->
-	<script src="/assets/js/main.js"></script>
 
 
 </body>

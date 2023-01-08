@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 
 <head>
 	<title>Home | Nischay</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
 	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
 	<link rel="stylesheet" href="/assets/css/main.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/brands.css">
 	<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
 	<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
 </head>
@@ -19,18 +15,11 @@
 
 <body>
 
-    <!-- Wrapper -->
-<div id="wrapper">
-
-<!-- Header -->
-<header id="header" class="alt">
-	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>
-	<nav>
-		<a href="#menu">Menu</a>
-	</nav>
+    <!-- Header -->
+<!--<header id="header" class="alt">
+	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>-->
 </header>
-
-<!-- Menu -->
+<!--
 <nav id="menu">
 	<ul class="links">
         
@@ -41,10 +30,10 @@
 		    
 		
 		    
-		        <li><a href="/">Home</a></li>
-	    	
 		
 		    
+		        <li><a href="/">Home</a></li>
+	    	
 		
 		
 		    
@@ -60,85 +49,168 @@
 		    
 		
 	</ul>
-	<ul class="actions vertical">
-		<li><a href="#" class="button special fit">Get Started</a></li>
-		<li><a href="#" class="button fit">Log In</a></li>
-	</ul>
+</nav>-->
+
+<!-- Sidebar -->
+<nav id="menu">
+	<div class="sidebar">
+        
+		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
+		        <a href="/">Home</a>
+	    	
+		
+		
+		    
+		
+		    
+		        <a href="/all_posts.html">All posts</a>
+		    
+		
+		    
+		        <a href="/arch.html">Linux good</a>
+		    
+		
+		    
+		
+	</div>
 </nav>
+
+<!-- Div with one image in it lol -->
+<div class="name" align="center"><img src="/assets/images/name.png" href="/"></div>
 
 
     <!-- Banner -->
-    <section id="banner" class="major">
+    <section id="banner" class="main">
+    <h1> $ whoami </h1>
         <div class="inner">
             <header class="major">
-                <h1>もしもし。ニスチャイです。</h1>
+                <h1></h1>
             </header>
             <div class="content">
-                <p>A fourth-year college student at Amrita Vishwa Vidyapeetham, Bengaluru. CTFs @ c0d3_h4cki05_ </p>
-                <ul class="actions">
-                    <li><a href="#one" class="button next scrolly">What I Do</a></li>
-                </ul>
+                <p>A Security Researcher at Uptycs. Former c0d3_h4cki05_ member.</p>
             </div>
         </div>
     </section>
 
     <!-- Main -->
-    <div id="main">
-
+    <div class="main">
+        <h2> Links </h2>
+        <section id="one" class="tiles">
+            <article>
+            <!--    <span class="image">
+                <img src="" alt="" />
+                </span>-->
+                <header class="major-tiles">
+                <h3><a href="all_posts.html" class="link">My Blog</a></h3>
+                <p>Where I post my CTF writeups and other things related to Cybersecurity. </p>
+                </header>
+            </article>
+            <article>
+            <!--    <span class="image">
+                <img src="/assets/images/dandelion.png" alt="" />
+                </span>-->
+                <header class="major-tiles">
+                <h3><a href="https://nischay.me/cplusplusstudent" class="link">My old Blog</a></h3>
+                <p>Where I used to post about C++ </p>
+                </header>
+            </article>
+        </section>
+    </div>
+    <div class="main">
+        <h2> Latest Posts </h2>
         <!-- One -->
         
-<section id="one" class="tiles">
+<section id="two" class="tiles">
+  
   <article>
-    <span class="image">
-      <img src="" alt="" />
-    </span>
-    <header class="major">
-      <h3><a href="all_posts.html" class="link">My Blog</a></h3>
-      <p>Where I post my CTF writeups and other things related to Cybersecurity. </p>
-    </header>
-  </article>
-   <article>
-    <span class="image">
-      <img src="/assets/images/dandelion.png" alt="" />
-    </span>
-    <header class="major">
-      <h3><a href="https://nischay.me/cplusplusstudent" class="link">My old Blog</a></h3>
-      <p>Where I used to post about C++ </p>
+<!--    <span class="image">
+      <img src="/assets/images/ascwg/logo.png" alt="" />
+    </span>-->
+    <header class="major-tiles">
+      <h3><a href="/2020/08/15/ascwg.html" class="link">Arab Security Cyber Wargames</a></h3>
+      <p>I solved all three challs, therefore I made a writeup</p>
     </header>
   </article>
   
   <article>
-    <span class="image">
-      <img src="/assets/images/arch.png" alt="" />
-    </span>
-    <header class="major">
-      <h3><a href="/arch.html" class="link">Linux good</a></h3>
-      <p>btw I use arch</p>
+<!--    <span class="image">
+      <img src="/assets/images/poseidon/logo.png" alt="" />
+    </span>-->
+    <header class="major-tiles">
+      <h3><a href="/2020/08/10/PoseidonCTF.html" class="link">PoseidonCTF</a></h3>
+      <p></p>
+    </header>
+  </article>
+  
+  <article>
+<!--    <span class="image">
+      <img src="" alt="" />
+    </span>-->
+    <header class="major-tiles">
+      <h3><a href="/2020/06/10/NoobCTF0x1.html" class="link">NoobCTF 0x1</a></h3>
+      <p>Writeup of all the rev challs in NoobCTF 0x1</p>
+    </header>
+  </article>
+  
+  <article>
+<!--    <span class="image">
+      <img src="" alt="" />
+    </span>-->
+    <header class="major-tiles">
+      <h3><a href="/2020/04/28/Houseplant.html" class="link">Houseplant CTF</a></h3>
+      <p>TODO</p>
+    </header>
+  </article>
+  
+  <article>
+<!--    <span class="image">
+      <img src="" alt="" />
+    </span>-->
+    <header class="major-tiles">
+      <h3><a href="/2020/04/20/WPICTF.html" class="link">WPICTF 2020</a></h3>
+      <p>Writeups of stuff that I solved for WPICTF</p>
+    </header>
+  </article>
+  
+  <article>
+<!--    <span class="image">
+      <img src="/assets/images/sora/main.png" alt="" />
+    </span>-->
+    <header class="major-tiles">
+      <h3><a href="/2020/04/08/sora.html" class="link">Sora</a></h3>
+      <p>A simple encryption function</p>
     </header>
   </article>
   
 
 </section>
 
-
-        <!-- Two -->
-        <section id="two">
-            <div class="inner">
-                <header class="major">
-                    <h2>More about me</h2>
-                </header>
-                <p><p>I’m a fourth year Electronics Engineering student at Amrita Vishwa Vidyapeetham, Bengaluru. Mostly interested in Reverse Engineering, I also code. While also being a FOSS enthusiast, I understand if some people want to use paid software because it makes their work easier (<strong>cough</strong> <strong>cough</strong> IDA <strong>cough</strong> <strong>cough</strong>).</p>
+    </div>
+    <div class="main">
+        <header class="major">
+            <h2>More about me</h2>
+        </header>
+        <p><p>I’m a Security Reseracher at <a href="https://uptycs.com">Uptycs</a> and an alumnus of <a href="https://www.amrita.edu/campus/bengaluru/">Amrita Bengaluru</a>. Mostly interested in Reverse Engineering, I also do <em>some</em> red-teaming these days while also coding. Although I am a FOSS enthusiast, I understand if some people want to use paid software because it makes their work easier (<strong>cough</strong> <strong>cough</strong> IDA <strong>cough</strong> <strong>cough</strong>).</p>
 </p>
-            </div>
-        </section>
-
     </div>
 
     <!-- Contact -->
-<section id="contact">
+<section class="contact">
 	<div class="inner">
 		<section>
-			<form action="https://formspree.io/hegdenischay@gmail.com" method="POST">
+		<h2> Contact me </h2>
+			<form action="https://formkeep.com/f/89c23290a542"
+			accept-charset="UTF-8"
+			enctype="multipart/form-data"
+			method="POST">
 				<div class="field half first">
 					<label for="name">Name</label>
 					<input type="text" name="name" id="name" />
@@ -152,12 +224,12 @@
 					<textarea name="message" id="message" rows="6"></textarea>
 				</div>
 				<ul class="actions">
-					<li><input type="submit" value="Send Message" class="special" /></li>
-					<li><input type="reset" value="Clear" /></li>
+					<input type="submit" value="Send Message" class="special" />
+					<input type="reset" value="Clear" class="special"/>
 				</ul>
 			</form>
 		</section>
-		<section class="split">
+<!--		<section class="split">
 			<section>
 				<div class="contact-method">
 					<span class="icon alt fa-envelope"></span>
@@ -186,50 +258,42 @@
 					</span>
 				</div>
 			</section>
-		</section>
+		</section>-->
 	</div>
 </section>
 
 <!-- Footer -->
-	<footer id="footer">
+	<footer id="footer" class="socials">
+	<h2> Socials </h2>
 		<div class="inner">
 			<ul class="icons">
 				
-				<li><a href="https://twitter.com/thatloststudent" class="icon alt fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+				<li><a href="https://twitter.com/thatloststudent" target="_blank"><i class="icon alt twitter"><span class="label">Twitter</span></i></a></li>
 				
 				
-				<li><a href="404.html" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+				<li><a href="https://infosec.exchange/@thatloststudent" class="icon alt mastodon" target="_blank"><span class="label">Fediverse</span></a></li>
 				
 				
-				
-				
-				
-				<li><a href="https://github.com/hegdenischay" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+				<li><a href="https://matrix.to/#/&commat;nischay&colon;nischay&period;me" class="icon alt matrix" target="_black"><img src="/assets/images/icons/matrix.svg" style="width: 40px; max-height:20px;"><span class="label">Matrix</span></a></li>
 				
 				
 				
-				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
 				
-			</ul>
-			<ul class="copyright">
-				<li>&copy; Nischay </li>
-				<li>Design: <a href="https://html5up.net" target="_blank">HTML5 UP</a></li>
-				<li>Jekyll integration: <a href="http://andrewbanchi.ch" target="_blank">Andrew Banchich</a></li>
-
+				
+				
+				
+				
+				<li><a href="https://github.com/hegdenischay" class="icon alt github" target="_blank"><span class="label">GitHub</span></a></li>
+				
+				
+				
+				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+				
 			</ul>
 		</div>
 	</footer>
 
 </div>
-
-<!-- Scripts -->
-	<script src="/assets/js/jquery.min.js"></script>
-	<script src="/assets/js/jquery.scrolly.min.js"></script>
-	<script src="/assets/js/jquery.scrollex.min.js"></script>
-	<script src="/assets/js/skel.min.js"></script>
-	<script src="/assets/js/util.js"></script>
-	<!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js"></script><![endif]-->
-	<script src="/assets/js/main.js"></script>
 
 
 </body>
