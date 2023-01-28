@@ -171,6 +171,15 @@ input[type=text], select, textarea {
   padding: 0;
 }
 
+.highlight pre {
+    white-space: pre-line;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    counter-reset: line;
+}
+
 
 /* When moving the mouse over the submit button, add a darker green color */
 .special:hover {

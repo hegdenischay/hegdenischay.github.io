@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Backdoor.srvupdat.exe | Nischay</title>
+	<meta charset="utf-8" />
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
+	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="/assets/css/main.css" />
+	<link rel="stylesheet" href="/assets/css/gruvbox.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/brands.css">
+	<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
+	<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
+</head>
+
+
+<body>
+
+    <!-- Header -->
+<!--<header id="header">
+	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>-->
+</header>
+<!--
+<nav id="menu">
+	<ul class="links">
+        
+		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
+		        <li><a href="/">Home</a></li>
+	    	
+		
+		
+		    
+		
+		    
+		        <li><a href="/all_posts.html">All posts</a></li>
+		    
+		
+		    
+		        <li><a href="/arch.html">Linux good</a></li>
+		    
+		
+		    
+		
+	</ul>
+</nav>-->
+
+<!-- Sidebar -->
+<nav id="menu">
+	<div class="sidebar">
+        
+		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
+		        <a href="/">Home</a>
+	    	
+		
+		
+		    
+		
+		    
+		        <a href="/all_posts.html">All posts</a>
+		    
+		
+		    
+		        <a href="/arch.html">Linux good</a>
+		    
+		
+		    
+		
+	</div>
+</nav>
+
+<!-- Div with one image in it lol -->
+<!--
+   -<div class="name" align="center"><img src="/assets/images/name.png" href="/"></div>
+	 -->
+<div class="name" align="center" >
+	<pre>
+             ███                   █████                          
+            ░░░                   ░░███                           
+ ████████   ████   █████   ██████  ░███████    ██████   █████ ████
+░░███░░███ ░░███  ███░░   ███░░███ ░███░░███  ░░░░░███ ░░███ ░███ 
+ ░███ ░███  ░███ ░░█████ ░███ ░░░  ░███ ░███   ███████  ░███ ░███ 
+ ░███ ░███  ░███  ░░░░███░███  ███ ░███ ░███  ███░░███  ░███ ░███ 
+ ████ █████ █████ ██████ ░░██████  ████ █████░░████████ ░░███████ 
+░░░░ ░░░░░ ░░░░░ ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░███ 
+                                                         ███ ░███ 
+                                                        ░░██████  
+                                                         ░░░░░░   
+	</pre>
+</div>
+
+
+
+<!-- Main -->
+<div id="main" class="alt main">
+
+<!-- One -->
+<section id="one">
+	<div class="inner">
+		<header class="major">
+			<h1>Backdoor.srvupdat.exe</h1>
+		</header>
+		<span class="image"><img src="/assets/images/Backdoor.srvupdat.exe/final.png" alt="Image describing the post" style="max-height: 100%" /></span>
+		<span class="description"><h3>Description: Writeup for the binary Backdoor.srvupdat.exe</h3></span>
+		<h1 id="introduction">Introduction</h1>
+<p>I have been procrastinating on the <a href="https://academy.tcm-sec.com/p/practical-malware-analysis-triage">PMAT</a> course for months, and I finally decided to finish it this week somehow. This writeup is for the <a href="https://github.com/HuskyHacks/PMAT-labs/blob/main/labs/3-5.GoTime-GoMalware/Backdoor.srvupdat.exe.malz.7z">Backdoor.srvupdat.exe.malz</a> file.</p>
+
+<p>Without further ado, let’s just dive into it.</p>
+
+<h2 id="setup-and-initial-static-analysis">Setup and Initial Static Analysis</h2>
+
+<p>I’m using IDA for this writeup, but it should be easy enough to follow along with other disassemblers/decompilers that you are familiar with.</p>
+
+<p>AlphaGolang’s categorization script has very nicely come up with folders for us to look into. Here’s a snippet:</p>
+
+<p><img src="/assets/images/Backdoor.srvupdat.exe/1.png" alt="image.png" /></p>
+
+<p>One look at https://github.com/kardianos/service and we can immediately figure out that <code class="language-plaintext highlighter-rouge">service</code> has very little to do with our actual malware, but a lot to do with how it persists in the system. We can basically ignore all of the <code class="language-plaintext highlighter-rouge">github_com_kardianos_service*</code> functions.</p>
+
+<p>The main function in golang is usually named <code class="language-plaintext highlighter-rouge">main_main</code> in IDA, so here’s a snippet of that:
+<img src="/assets/images/Backdoor.srvupdat.exe/2.png" alt="image.png" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">srv</code>, <code class="language-plaintext highlighter-rouge">srvgosse41sse42ssse3</code> and <code class="language-plaintext highlighter-rouge">gosrv</code> immediately stand out to me as weird, and it’s pretty interesting that it’s passed onto <code class="language-plaintext highlighter-rouge">github_com_kardianos_service_New</code>. Thankfully, there’s a <a href="https://github.com/kardianos/service/blob/master/example/simple/main.go">simple example</a> on the github page. Here’s the relevant snippet:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  func main() {
+  	svcConfig := &amp;service.Config{
+  		Name:        "GoServiceExampleSimple",
+  		DisplayName: "Go Service Example",
+  		Description: "This is an example Go service.",
+  	}
+  
+  	prg := &amp;program{}
+  	s, err := service.New(prg, svcConfig)
+</code></pre></div></div>
+
+<p>Okay, so the last argument is the <code class="language-plaintext highlighter-rouge">svcConfig</code>, which is presumably what the service will be called in Task Scheduler. There’s also the <code class="language-plaintext highlighter-rouge">main_logger</code> variable, which at first glance looks like it corresponds to the <code class="language-plaintext highlighter-rouge">s.Logger(nil)</code> line in the simple example.</p>
+
+<p>If all this is true, there should be three functions named <code class="language-plaintext highlighter-rouge">Start</code>, <code class="language-plaintext highlighter-rouge">Stop</code>, and <code class="language-plaintext highlighter-rouge">run</code> right? As a matter of fact, there are, and they’re called <code class="language-plaintext highlighter-rouge">main__program_Start</code>, <code class="language-plaintext highlighter-rouge">main__program_Stop</code>, and <code class="language-plaintext highlighter-rouge">main__program_run</code> in the screenshots, respectively. So if I’m following the example program given, <code class="language-plaintext highlighter-rouge">main__program_Start</code> should simply be just <code class="language-plaintext highlighter-rouge">go p.run()</code>, and if you look at the disassembly, that is indeed the case:</p>
+
+<p><img src="/assets/images/Backdoor.srvupdat.exe/3.png" alt="image.png" /></p>
+
+<p>So we have shown beyond a shred of doubt that the malware here follows the same basic program structure as the example program for service, which means that <code class="language-plaintext highlighter-rouge">p.run()</code> (or rather <code class="language-plaintext highlighter-rouge">main__program_run</code>) should have all the juicy details. And it does:</p>
+
+<p><img src="/assets/images/Backdoor.srvupdat.exe/4.png" alt="image.png" /></p>
+
+<p>The very first line shows a <code class="language-plaintext highlighter-rouge">GET</code> request to <code class="language-plaintext highlighter-rouge">http://ec2-3-109-20-24-srv3.local/favicon.ico</code>, and then there’s a <code class="language-plaintext highlighter-rouge">net.Dial</code>, where the program clearly reads something out of it. If you’ve worked with <code class="language-plaintext highlighter-rouge">metasploit</code> or related shells enough, you know that the <code class="language-plaintext highlighter-rouge">reverse shell</code> usually connects to a remote IP and then does something with the input that it gets.</p>
+
+<p><img src="/assets/images/Backdoor.srvupdat.exe/5.png" alt="image.png" /></p>
+
+<p>And there’s the telltale sign that it’s indeed a shell, it executes something based on what I give as input.</p>
+
+<p>So all I really need to do is to figure out what it’s connecting to, where the assembly of the <code class="language-plaintext highlighter-rouge">net.Dial</code> call comes in handy:</p>
+
+<p><img src="/assets/images/Backdoor.srvupdat.exe/6.png" alt="image.png" /></p>
+
+<p>So all I need to do is to assign my VM the IP <code class="language-plaintext highlighter-rouge">10.10.1.237</code>, start a listener at port <code class="language-plaintext highlighter-rouge">3301</code>, and we should have a reverse shell.</p>
+
+<p><img src="/assets/images/Backdoor.srvupdat.exe/final.png" alt="image.png" /></p>
+
+<p>And that’s exactly what happens.</p>
+
+	</div>
+</section>
+
+</div>
+
+    <!-- Contact -->
+<section class="contact">
+	<div class="inner">
+		<section>
+		<h2> Contact me </h2>
+			<form action="https://formkeep.com/f/89c23290a542"
+			accept-charset="UTF-8"
+			enctype="multipart/form-data"
+			method="POST">
+				<div class="field half first">
+					<label for="name">Name</label>
+					<input type="text" name="name" id="name" />
+				</div>
+				<div class="field half">
+					<label for="email">Email</label>
+					<input type="text" name="_replyto" id="email" />
+				</div>
+				<div class="field">
+					<label for="message">Message</label>
+					<textarea name="message" id="message" rows="6"></textarea>
+				</div>
+				<ul class="actions">
+					<input type="submit" value="Send Message" class="special" />
+					<input type="reset" value="Clear" class="special"/>
+				</ul>
+			</form>
+		</section>
+<!--		<section class="split">
+			<section>
+				<div class="contact-method">
+					<span class="icon alt fa-envelope"></span>
+					<h3>Email</h3>
+					<a href="#">hegdenischay@gmail.com</a>
+				</div>
+			</section>
+			<section>
+				<div class="contact-method">
+					<span class="icon alt fa-home"></span>
+					<h3>Address</h3>
+					<span>
+					
+					
+					    Bengaluru,
+					
+					
+					    KA 
+					
+					
+					    560035<br />
+					
+					
+					    India
+					
+					</span>
+				</div>
+			</section>
+		</section>-->
+	</div>
+</section>
+
+<!-- Footer -->
+	<footer id="footer" class="socials">
+	<h2> Socials </h2>
+		<div class="inner">
+			<ul class="icons">
+				
+				<li><a href="https://twitter.com/thatloststudent" target="_blank"><i class="icon alt twitter"><span class="label">Twitter</span></i></a></li>
+				
+				
+				<li><a href="https://infosec.exchange/@thatloststudent" class="icon alt mastodon" target="_blank"><span class="label">Fediverse</span></a></li>
+				
+				
+				<li><a href="https://matrix.to/#/&commat;nischay&colon;nischay&period;me" class="icon alt matrix" target="_black"><img src="/assets/images/icons/matrix.svg" style="width: 40px; max-height:20px;"><span class="label">Matrix</span></a></li>
+				
+				
+				
+				
+				
+				
+				
+				
+				<li><a href="https://github.com/hegdenischay" class="icon alt github" target="_blank"><span class="label">GitHub</span></a></li>
+				
+				
+				
+				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+				
+			</ul>
+		</div>
+	</footer>
+
+</div>
+
+
+</body>
+
+</html>

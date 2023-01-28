@@ -5,9 +5,77 @@
     <description>A Security Researcher at Uptycs. Former c0d3_h4cki05_ member.</description>
     <link>http://localhost:4000//</link>
     <atom:link href="http://localhost:4000//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 08 Jan 2023 21:37:36 +0530</pubDate>
-    <lastBuildDate>Sun, 08 Jan 2023 21:37:36 +0530</lastBuildDate>
+    <pubDate>Sat, 28 Jan 2023 10:57:04 +0530</pubDate>
+    <lastBuildDate>Sat, 28 Jan 2023 10:57:04 +0530</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+     
+      <item>
+        <title>Backdoor.srvupdat.exe</title>
+        <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;I have been procrastinating on the &lt;a href=&quot;https://academy.tcm-sec.com/p/practical-malware-analysis-triage&quot;&gt;PMAT&lt;/a&gt; course for months, and I finally decided to finish it this week somehow. This writeup is for the &lt;a href=&quot;https://github.com/HuskyHacks/PMAT-labs/blob/main/labs/3-5.GoTime-GoMalware/Backdoor.srvupdat.exe.malz.7z&quot;&gt;Backdoor.srvupdat.exe.malz&lt;/a&gt; file.&lt;/p&gt;
+
+&lt;p&gt;Without further ado, let’s just dive into it.&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-and-initial-static-analysis&quot;&gt;Setup and Initial Static Analysis&lt;/h2&gt;
+
+&lt;p&gt;I’m using IDA for this writeup, but it should be easy enough to follow along with other disassemblers/decompilers that you are familiar with.&lt;/p&gt;
+
+&lt;p&gt;AlphaGolang’s categorization script has very nicely come up with folders for us to look into. Here’s a snippet:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/Backdoor.srvupdat.exe/1.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;One look at https://github.com/kardianos/service and we can immediately figure out that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;service&lt;/code&gt; has very little to do with our actual malware, but a lot to do with how it persists in the system. We can basically ignore all of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;github_com_kardianos_service*&lt;/code&gt; functions.&lt;/p&gt;
+
+&lt;p&gt;The main function in golang is usually named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main_main&lt;/code&gt; in IDA, so here’s a snippet of that:
+&lt;img src=&quot;/assets/images/Backdoor.srvupdat.exe/2.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;srv&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;srvgosse41sse42ssse3&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gosrv&lt;/code&gt; immediately stand out to me as weird, and it’s pretty interesting that it’s passed onto &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;github_com_kardianos_service_New&lt;/code&gt;. Thankfully, there’s a &lt;a href=&quot;https://github.com/kardianos/service/blob/master/example/simple/main.go&quot;&gt;simple example&lt;/a&gt; on the github page. Here’s the relevant snippet:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  func main() {
+  	svcConfig := &amp;amp;service.Config{
+  		Name:        &quot;GoServiceExampleSimple&quot;,
+  		DisplayName: &quot;Go Service Example&quot;,
+  		Description: &quot;This is an example Go service.&quot;,
+  	}
+  
+  	prg := &amp;amp;program{}
+  	s, err := service.New(prg, svcConfig)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Okay, so the last argument is the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;svcConfig&lt;/code&gt;, which is presumably what the service will be called in Task Scheduler. There’s also the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main_logger&lt;/code&gt; variable, which at first glance looks like it corresponds to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;s.Logger(nil)&lt;/code&gt; line in the simple example.&lt;/p&gt;
+
+&lt;p&gt;If all this is true, there should be three functions named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Start&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Stop&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;run&lt;/code&gt; right? As a matter of fact, there are, and they’re called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main__program_Start&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main__program_Stop&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main__program_run&lt;/code&gt; in the screenshots, respectively. So if I’m following the example program given, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main__program_Start&lt;/code&gt; should simply be just &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;go p.run()&lt;/code&gt;, and if you look at the disassembly, that is indeed the case:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/Backdoor.srvupdat.exe/3.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So we have shown beyond a shred of doubt that the malware here follows the same basic program structure as the example program for service, which means that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;p.run()&lt;/code&gt; (or rather &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main__program_run&lt;/code&gt;) should have all the juicy details. And it does:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/Backdoor.srvupdat.exe/4.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The very first line shows a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://ec2-3-109-20-24-srv3.local/favicon.ico&lt;/code&gt;, and then there’s a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;net.Dial&lt;/code&gt;, where the program clearly reads something out of it. If you’ve worked with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;metasploit&lt;/code&gt; or related shells enough, you know that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reverse shell&lt;/code&gt; usually connects to a remote IP and then does something with the input that it gets.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/Backdoor.srvupdat.exe/5.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And there’s the telltale sign that it’s indeed a shell, it executes something based on what I give as input.&lt;/p&gt;
+
+&lt;p&gt;So all I really need to do is to figure out what it’s connecting to, where the assembly of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;net.Dial&lt;/code&gt; call comes in handy:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/Backdoor.srvupdat.exe/6.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So all I need to do is to assign my VM the IP &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.10.1.237&lt;/code&gt;, start a listener at port &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;3301&lt;/code&gt;, and we should have a reverse shell.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/Backdoor.srvupdat.exe/final.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And that’s exactly what happens.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 28 Jan 2023 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000//2023/01/28/Backdoor.srvupdat.exe.html</link>
+        <guid isPermaLink="true">http://localhost:4000//2023/01/28/Backdoor.srvupdat.exe.html</guid>
+        
+        
+      </item>
+      
     
      
       <item>
