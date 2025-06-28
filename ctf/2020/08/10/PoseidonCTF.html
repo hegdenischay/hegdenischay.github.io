@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        404 | Nischay
+        PoseidonCTF | Nischay
     </title>
     <meta charset="utf-8" />
     <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
@@ -376,13 +376,60 @@
 <section id="one">
 	<div class="inner">
 		<header class="major">
-			<h1><center>404</center></h1>
+			<h1><center>PoseidonCTF</center></h1>
 		</header>
 		
-		<center><span class="image"><img src="/assets/images/404.jpg" alt="Image describing the post" style="max-height: 100%" /></span></center>
-		<p>Page not found! :(</p>
+		<center><span class="image"><img src="/assets/images/poseidon/logo.png" alt="Image describing the post" style="max-height: 100%" /></span></center>
+		<h1 id="intro">Intro</h1>
 
-<p>Photo by <a href="https://unsplash.com/@dav420?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">David Pupaza</a> on <a href="https://unsplash.com/photos/heNwUmEtZzo?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
+<p>Well, I screwed up. I was only able to solve only one rev chall, their warmup. I guess it’s normal for a n00b like me, though.</p>
+
+<h2 id="the-large-cherries">The Large Cherries</h2>
+
+<p>We’re given a file called Lao-Tzu.</p>
+
+<p><img src="/assets/images/poseidon/1.png" alt="ptrace reeee" /></p>
+
+<p>There’s a ptrace at the very top, so if you bypass it, you will see that:</p>
+
+<p>It asks for two kinds of inputs, and for the first time, it asks for 9 characters and 10 characters the second time.</p>
+
+<p>The first input is sent to this function, called <code class="language-plaintext highlighter-rouge">magic_word</code>.</p>
+
+<p><img src="/assets/images/poseidon/2.png" alt="magick" /></p>
+
+<p>The function essentially makes sure that certain conditions are met for input[0] to input[7], even though the input asks for 9 characters. This is our key to solving this chall.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from z3 import Solver, Xor, BitVec
+
+a = [BitVec('a%s' % i,64 ) for i in range(9)]
+
+s = Solver()
+s.add(a[3] + a[0] == 0xab)
+s.add(a[3] == 0x37)
+s.add(a[2] ^ a[1] == 0x5d)
+s.add(a[4] - a[2] == 5)
+s.add(a[6] + a[4] == 0xa2)
+s.add(a[5] == a[6])
+s.add(a[6] == 0x30)
+s.add(a[7] == 0x7a)
+s.check()
+m = s.model()
+print(s.model())
+b= []
+for i in range(8):
+    b.append(chr(int(m[a[i]].as_string())))
+c = ''.join(b)
+print(c)
+</code></pre></div></div>
+<p>Now, this piece of code gives out <code class="language-plaintext highlighter-rouge">t0m7r00z</code>, which is only 8 characters. This will be important later.</p>
+
+<p>The second piece of input is a 10 character input, that checks if all of the characters add up to <code class="language-plaintext highlighter-rouge">0x294</code>, i.e. <code class="language-plaintext highlighter-rouge">660</code>. That happens to be the sum of digital sum of <code class="language-plaintext highlighter-rouge">t0m7r00z</code>.</p>
+
+<p>Therefore, we need to add something extra to the mix. This character can be quite literally anything, and I just typed <code class="language-plaintext highlighter-rouge">t0m7r00za</code> as both inputs.</p>
+
+<p>Flag: <code class="language-plaintext highlighter-rouge">Poseidon{Its_L3_t3Mp5_DeS_C3r1s35}</code></p>
+
 
 	</div>
 </section>

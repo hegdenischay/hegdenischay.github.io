@@ -1,199 +1,250 @@
+/* Default dark theme variables */
+:root {
+    --bg: black;
+    --text: #66ae60;
+    --border-color: white;
+    --header-text: white;
+    --toggle-bg: black;
+    --toggle-text: #66ae60;
+}
+
+/* Light theme when the checkbox is checked */
+html:has(#color-mode:checked) {
+    --bg: white;
+    --text: #66ae60;
+    --border-color: black;
+    --header-text: black;
+    --toggle-bg: white;
+    --toggle-text: #66ae60;
+}
+
+/* Toggle button container */
+#color-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Hidden checkbox */
+#color-mode {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+/* Visible toggle button */
+.toggle-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-family: monospace;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: var(--toggle-bg);
+    color: var(--toggle-text);
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+/* Toggle button active state */
+#color-mode:checked + label.toggle-button {
+    background-color: var(--text);
+    color: var(--bg);
+    transform: translateY(2px);
+    box-shadow: 0 0 5px var(--text);
+}
+
+/* Style toggled state so user gets visual feedback */
+body.light-mode .toggle-button {
+    background-color: white;
+    color: #66ae60;
+    border-color: black;
+}
+
+.color-scheme-wrapper {
+    min-height: 100vh;
+    background-color: var(--bg);
+    color: var(--text);
+    width: 100%;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
 /* Terminal-like font */
 body {
-  font-family: monospace;
-  background-color: black;
-  color: white;
+    font-family: monospace;
+    font-size: 16px;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
 #header {
     font-family: monospace;
-    color: white;
+    color: var(--header-text);
 }
 
 /* Sidebar */
 .sidebar {
-  height: 100%;
-  position: fixed;
-  overflow: auto;
-  /* sidebar should cover 10% of screen, rest main */
-  width: 10%;
-  border: 2px solid white;
-  padding: 20px;
+    height: 100%;
+    position: fixed;
+    overflow: auto;
+    /* sidebar should cover 10% of screen, rest main */
+    width: 10%;
+    border: 2px solid var(--border-color);
+    padding: 20px;
 }
 /* Links */
 .sidebar a {
-  padding: 4% 4% 4% 16%;
-  text-decoration: none;
-  font-size: 16px;
-  display: block;
-  color: #66ae60;
+    padding: 4% 4% 4% 16%;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    color: var(--text);
 }
 .sidebar a:hover {
-  color: #f1f1f1;
+    color: #f1f1f1;
 }
 
 .sidebar a:current {
-  border: dotted;
+    border: dotted;
 }
 
 /* Main content */
 .main {
-  margin-left: 15%;
-  padding: 20px;
-  border: 2px solid white;
-  width: 80%;
-  color: #66ae60;
+    margin-left: 15%;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    width: 80%;
+    color: var(--text);
 }
 
+.name {
+    color: var(--header-text);
+}
 
 .contact {
-  margin-left: 15%;
-  padding: 20px;
-  border: 2px solid white;
-  width: 80%;
-  color: #66ae60;
+    margin-left: 15%;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    width: 80%;
+    color: var(--text);
 }
 
 .socials {
-  margin-left: 15%;
-  padding: 20px;
-  border: 2px solid white;
-  width: 80%;
-  color: #66ae60;
+    margin-left: 15%;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    width: 80%;
+    color: var(--text);
 }
 
 .name {
     margin-left: 15%;
     margin-bottom: 30px;
     padding: 20px;
-    border: 2px solid white;
+    border: 2px solid var(--border-color);
     width: 80%;
     max-height: 150px;
 }
 
 img {
-    max-width:100%;
+    max-width: 100%;
     max-height: inherit;
     object-fit: cover;
 }
 
 .main .inner .image {
-    max-width:100%;
+    max-width: 100%;
     max-height: inherit;
     object-fit: cover;
 }
 
 .socials .inner ul li {
-  list-style-type: none;
-  display: inline-block;
-  margin-right: 20px;
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 20px;
 }
 .icon::before {
-  display: inline-block;
-  font-style: normal;
-  font-variant: normal;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-}
-.facebook::before {
-  font-family: "Font Awesome 5 Brands";
-  font-weight: 900;
-  content: "\f09a";
-}
-.twitter::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f099";
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
 }
 .mastodon::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f4f6";
-}
-.google-plus::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f2b3";
-}
-.instagram::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f16d";
-}
-.pinterest::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f0d2";
-}
-.500px::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f26e";
-}
-.gitlab::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f296";
+    font-family: "Font Awesome 5 Brands";
+    content: "\f4f6";
 }
 .github::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f113";
+    font-family: "Font Awesome 5 Brands";
+    content: "\f113";
 }
 .slack::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f198";
-}
-.linkedin::before {
-  font-family: "Font Awesome 5 Brands";
-  content: "\f08c";
+    font-family: "Font Awesome 5 Brands";
+    content: "\f198";
 }
 
 /* Style inputs with type="text", select elements and textareas */
-input[type=text], select, textarea {
-  width: 100%; /* Full width */
-  padding: 12px; /* Some padding */
-  border: 1px solid #ccc; /* Gray border */
-  border-radius: 4px; /* Rounded borders */
-  box-sizing: border-box; /* Make sure that padding and width stays in place */
-  margin-top: 6px; /* Add a top margin */
-  margin-bottom: 16px; /* Bottom margin */
-  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
-  background-color: inherit;
-  color: white;
-  font-family: inherit;
+input[type="text"],
+select,
+textarea {
+    width: 100%; /* Full width */
+    padding: 12px; /* Some padding */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 4px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 6px; /* Add a top margin */
+    margin-bottom: 16px; /* Bottom margin */
+    resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+    background-color: inherit;
+    color: white;
+    font-family: inherit;
 }
 
 /* Style the submit button with a specific background color etc */
 .special {
-  background-color: #66ae60;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: monospace;
+    background-color: #66ae60;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: monospace;
 }
 
 .contact .inner .actions {
-  padding: 0;
+    padding: 0;
 }
 
 .highlight pre {
-    white-space: pre-line;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    white-space: pre-line; /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
     counter-reset: line;
 }
 
-
 /* When moving the mouse over the submit button, add a darker green color */
 .special:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
-
 
 /* #### Mobile Phones Portrait or Landscape #### */
-@media screen and (max-device-width: 900px){
-  /* some CSS here */
+@media screen and (max-device-width: 900px) {
+    /* some CSS here */
     .sidebar {
         width: inherit;
         margin-bottom: 30px;
-       height: auto;
+        height: auto;
         position: relative;
         padding: 20px;
     }
@@ -207,25 +258,25 @@ input[type=text], select, textarea {
         font-size: 20px;
     }
     .name {
-         margin-left: 0;
-         width: inherit;
-     }
-     .contact {
-       margin-left: 0;
-       width: inherit;
+        margin-left: 0;
+        width: inherit;
+    }
+    .contact {
+        margin-left: 0;
+        width: inherit;
     }
     .socials {
-      margin-left: 0;
-      width: inherit;
+        margin-left: 0;
+        width: inherit;
     }
 }
 
-@media screen and (max-width: 900px){
-  /* some CSS here */
+@media screen and (max-width: 900px) {
+    /* some CSS here */
     .sidebar {
         width: inherit;
         margin-bottom: 30px;
-       height: auto;
+        height: auto;
         position: relative;
         padding: 20px;
     }
@@ -239,21 +290,20 @@ input[type=text], select, textarea {
         font-size: 20px;
     }
     .name {
-         margin-left: 0;
-         width: inherit;
-     }
-     .contact {
-       margin-left: 0;
-       width: inherit;
+        margin-left: 0;
+        width: inherit;
+    }
+    .contact {
+        margin-left: 0;
+        width: inherit;
     }
     .socials {
-      margin-left: 0;
-      width: inherit;
+        margin-left: 0;
+        width: inherit;
     }
 }
-
 
 /* #### Desktops #### */
-@media screen and (min-width: 1024px){
-  /* some CSS here */
+@media screen and (min-width: 1024px) {
+    /* some CSS here */
 }

@@ -2,20 +2,27 @@
 <html>
 
 <head>
-	<title>Arab Security Cyber Wargames | Nischay</title>
-	<meta charset="utf-8" />
-	<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
-	<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
-	<link rel="stylesheet" href="/assets/css/main.css" />
-	<link rel="stylesheet" href="/assets/css/gruvbox.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/brands.css">
-	<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
-	<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
+    <title>
+        Arab Security Cyber Wargames | Nischay
+    </title>
+    <meta charset="utf-8" />
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
+    <!--[if lte IE 8
+        ]><script src="/assets/js/ie/html5shiv.js"></script
+    ><![endif]-->
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/gruvbox.css" />
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/brands.css">-->
+    <!--[if lte IE 9
+        ]><link rel="stylesheet" href="/assets/css/ie9.css"
+    /><![endif]-->
+    <!--[if lte IE 8
+        ]><link rel="stylesheet" href="/assets/css/ie8.css"
+    /><![endif]-->
 </head>
 
 
 <body>
-
     <!-- Header -->
 <!--<header id="header">
 	<a href="/" class="logo"><strong>Nischay</strong> <span></span></a>-->
@@ -33,9 +40,23 @@
 		    
 		
 		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
 		        <li><a href="/">Home</a></li>
 	    	
 		
+		    
+		
+		
+		    
+		
+		    
 		
 		    
 		
@@ -47,6 +68,18 @@
 		        <li><a href="/arch.html">Linux good</a></li>
 		    
 		
+		    
+		        <li><a href="/courses.html">Course-related</a></li>
+		    
+		
+		    
+		        <li><a href="/ctf.html">CTF</a></li>
+		    
+		
+		    
+		
+		    
+		        <li><a href="/privacy.html">Privacy</a></li>
 		    
 		
 	</ul>
@@ -65,9 +98,23 @@
 		    
 		
 		    
+		
+		    
+		
+		    
+		
+		    
+		
+		    
 		        <a href="/">Home</a>
 	    	
 		
+		    
+		
+		
+		    
+		
+		    
 		
 		    
 		
@@ -80,16 +127,29 @@
 		    
 		
 		    
+		        <a href="/courses.html">Course-related</a>
+		    
 		
-	</div>
+		    
+		        <a href="/ctf.html">CTF</a>
+		    
+		
+		    
+		
+		    
+		        <a href="/privacy.html">Privacy</a>
+		    
+		
+
 </nav>
 
 <!-- Div with one image in it lol -->
 <!--
    -<div class="name" align="center"><img src="/assets/images/name.png" href="/"></div>
 	 -->
+<!-- font name: dos rebel -->
 <div class="name" align="center" >
-	<pre>
+        <pre>
              ███                   █████                          
             ░░░                   ░░███                           
  ████████   ████   █████   ██████  ░███████    ██████   █████ ████
@@ -101,8 +161,211 @@
                                                          ███ ░███ 
                                                         ░░██████  
                                                          ░░░░░░   
-	</pre>
+        </pre>
 </div>
+<div id="color-toggle">
+			<input type="checkbox" id="color-mode">
+			<label for="color-mode" class="theme-switch">
+				<div class="switch">
+					<div class="switch-handle">
+						<span class="crater crater-1"></span>
+						<span class="crater crater-2"></span>
+						<span class="crater crater-3"></span>
+					</div>
+					<div class="star star-1"></div>
+					<div class="star star-2"></div>
+					<div class="star star-3"></div>
+					<div class="star star-4"></div>
+					<div class="star star-5"></div>
+					<div class="star star-6"></div>
+				</div>
+			</label>
+		</div>
+		<script>
+			// Initialize theme from localStorage on page load
+			document.addEventListener('DOMContentLoaded', function() {
+				var colorMode = document.getElementById('color-mode');
+				var storedTheme = localStorage.getItem('theme');
+
+				// Apply the stored theme preference if it exists
+				if (storedTheme === 'dark') {
+					colorMode.checked = true;
+					document.body.classList.add('dark-theme');
+				} else if (storedTheme === 'light') {
+					colorMode.checked = false;
+					document.body.classList.remove('dark-theme');
+				}
+
+				// Listen for changes to the checkbox
+				colorMode.addEventListener('change', function() {
+					if (this.checked) {
+						// Dark theme
+						document.body.classList.add('dark-theme');
+						localStorage.setItem('theme', 'dark');
+					} else {
+						// Light theme
+						document.body.classList.remove('dark-theme');
+						localStorage.setItem('theme', 'light');
+					}
+				});
+			});
+		</script>
+		<style>
+			.theme-switch {
+				display: inline-block;
+				height: 34px;
+				position: relative;
+				width: 60px;
+				cursor: pointer;
+			}
+
+			.switch {
+				background-color: #343D5B;
+				border-radius: 1000px;
+				position: relative;
+				height: 100%;
+				width: 100%;
+				transition: background-color 0.3s ease;
+				overflow: hidden;
+			}
+
+			.switch-handle {
+				background-color: #FFD000;
+				border-radius: 50%;
+				height: 26px;
+				width: 26px;
+				position: absolute;
+				left: 4px;
+				top: 4px;
+				transition: all 0.3s ease;
+			}
+
+			.crater {
+				background-color: #E8BB63;
+				border-radius: 50%;
+				position: absolute;
+				opacity: 0;
+				transition: opacity 0.2s ease;
+			}
+
+			.crater-1 {
+				height: 8px;
+				width: 8px;
+				top: 8px;
+				left: 9px;
+			}
+
+			.crater-2 {
+				height: 6px;
+				width: 6px;
+				top: 16px;
+				left: 15px;
+			}
+
+			.crater-3 {
+				height: 5px;
+				width: 5px;
+				top: 6px;
+				left: 17px;
+			}
+
+			.star {
+				background-color: #fff;
+				border-radius: 50%;
+				position: absolute;
+				transition: all 0.3s ease;
+				opacity: 0;
+			}
+
+			.star-1 {
+				width: 3px;
+				height: 3px;
+				top: 8px;
+				left: 35px;
+			}
+
+			.star-2 {
+				width: 2px;
+				height: 2px;
+				top: 14px;
+				left: 45px;
+			}
+
+			.star-3 {
+				width: 2px;
+				height: 2px;
+				top: 24px;
+				left: 40px;
+			}
+
+			.star-4 {
+				width: 2px;
+				height: 2px;
+				top: 18px;
+				left: 32px;
+			}
+
+			.star-5 {
+				width: 1px;
+				height: 1px;
+				top: 10px;
+				left: 48px;
+			}
+
+			.star-6 {
+				width: 2px;
+				height: 2px;
+				top: 22px;
+				left: 50px;
+			}
+
+			#color-mode:checked + .theme-switch .switch {
+				background-color: #749DD6;
+			}
+
+			#color-mode:checked + .theme-switch .switch-handle {
+				background-color: #F4F4F2;
+				transform: translateX(26px);
+			}
+
+			#color-mode:checked + .theme-switch .crater {
+				opacity: 1;
+			}
+
+			#color-mode:checked + .theme-switch .star {
+				opacity: 1;
+				transform: scale(1) rotate(45deg);
+			}
+
+			/* Add a subtle pulse animation to the stars */
+			@keyframes pulse {
+				0% { transform: scale(1); }
+				50% { transform: scale(1.2); }
+				100% { transform: scale(1); }
+			}
+
+			#color-mode:checked + .theme-switch .star-1 {
+				animation: pulse 2s infinite;
+			}
+
+			#color-mode:checked + .theme-switch .star-2 {
+				animation: pulse 2.5s infinite;
+			}
+
+			#color-mode:checked + .theme-switch .star-3 {
+				animation: pulse 1.8s infinite;
+			}
+
+			/* Hover effect */
+			.theme-switch:hover .switch {
+				box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+			}
+
+			.theme-switch:hover .switch-handle {
+				box-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+			}
+		</style>
+	</div>
 
 
 
@@ -113,10 +376,10 @@
 <section id="one">
 	<div class="inner">
 		<header class="major">
-			<h1>Arab Security Cyber Wargames</h1>
+			<h1><center>Arab Security Cyber Wargames</center></h1>
 		</header>
-		<span class="image"><img src="/assets/images/ascwg/logo.png" alt="Image describing the post" style="max-height: 100%" /></span>
-		<span class="description"><h3>Description: I solved all three challs, therefore I made a writeup</h3></span>
+		<span class="description"><center><i><h3>I solved all three challs, therefore I made a writeup</h3></span></i></center>
+		<center><span class="image"><img src="/assets/images/ascwg/logo.png" alt="Image describing the post" style="max-height: 100%" /></span></center>
 		<h1 id="introduction">Introduction</h1>
 
 <p>This CTF was the Qualifier to the finals, and rev was pretty easy. Anyways, for people that might not have understood how to solve certain challenges, this writeup is for them.</p>
@@ -252,6 +515,27 @@ for i in range(16):
 </div>
 
     <!-- Contact -->
+<script>
+// Get the toggle button
+const toggleButton = document.getElementById('dark-mode-toggle');
+
+if (localStorage.getItem('dark-mode') === 'enabled') {
+    document.body.classList.add('dark-mode');
+    toggleButton.classList.add('pressed');
+}
+
+toggleButton.addEventListener('click', function() {
+    if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+        toggleButton.classList.remove('pressed');
+        localStorage.setItem('dark-mode', 'disabled');
+    } else {
+        document.body.classList.add('dark-mode');
+        toggleButton.classList.add('pressed');
+        localStorage.setItem('dark-mode', 'enabled');
+    }
+});
+</script>
 <section class="contact">
 	<div class="inner">
 		<section>
@@ -296,7 +580,7 @@ for i in range(16):
 					    Bengaluru,
 					
 					
-					    KA 
+					    KA
 					
 					
 					    560035<br />
