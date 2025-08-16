@@ -666,53 +666,55 @@ print(''.join(chr(ord(a)^ord(b)) for a,b in zip(key,given_str)))
 
     <!-- Contact -->
 <script>
-// Get the toggle button
-const toggleButton = document.getElementById('dark-mode-toggle');
+    // Get the toggle button
+    const toggleButton = document.getElementById("dark-mode-toggle");
 
-if (localStorage.getItem('dark-mode') === 'enabled') {
-    document.body.classList.add('dark-mode');
-    toggleButton.classList.add('pressed');
-}
-
-toggleButton.addEventListener('click', function() {
-    if (document.body.classList.contains('dark-mode')) {
-        document.body.classList.remove('dark-mode');
-        toggleButton.classList.remove('pressed');
-        localStorage.setItem('dark-mode', 'disabled');
-    } else {
-        document.body.classList.add('dark-mode');
-        toggleButton.classList.add('pressed');
-        localStorage.setItem('dark-mode', 'enabled');
+    if (localStorage.getItem("dark-mode") === "enabled") {
+        document.body.classList.add("dark-mode");
+        toggleButton.classList.add("pressed");
     }
-});
+
+    toggleButton.addEventListener("click", function () {
+        if (document.body.classList.contains("dark-mode")) {
+            document.body.classList.remove("dark-mode");
+            toggleButton.classList.remove("pressed");
+            localStorage.setItem("dark-mode", "disabled");
+        } else {
+            document.body.classList.add("dark-mode");
+            toggleButton.classList.add("pressed");
+            localStorage.setItem("dark-mode", "enabled");
+        }
+    });
 </script>
 <section class="contact">
-	<div class="inner">
-		<section>
-		<h2> Contact me </h2>
-			<form action="https://formkeep.com/f/89c23290a542"
-			accept-charset="UTF-8"
-			enctype="multipart/form-data"
-			method="POST">
-				<div class="field half first">
-					<label for="name">Name</label>
-					<input type="text" name="name" id="name" />
-				</div>
-				<div class="field half">
-					<label for="email">Email</label>
-					<input type="text" name="_replyto" id="email" />
-				</div>
-				<div class="field">
-					<label for="message">Message</label>
-					<textarea name="message" id="message" rows="6"></textarea>
-				</div>
-				<ul class="actions">
-					<input type="submit" value="Send Message" class="special" />
-					<input type="reset" value="Clear" class="special"/>
-				</ul>
-			</form>
-		</section>
-<!--		<section class="split">
+    <div class="inner">
+        <section>
+            <h2>Contact me</h2>
+            <form
+                action="https://formkeep.com/f/89c23290a542"
+                accept-charset="UTF-8"
+                enctype="multipart/form-data"
+                method="POST"
+            >
+                <div class="field half first">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" />
+                </div>
+                <div class="field half">
+                    <label for="email">Email</label>
+                    <input type="text" name="_replyto" id="email" />
+                </div>
+                <div class="field">
+                    <label for="message">Message</label>
+                    <textarea name="message" id="message" rows="6"></textarea>
+                </div>
+                <ul class="actions">
+                    <input type="submit" value="Send Message" class="special" />
+                    <input type="reset" value="Clear" class="special" />
+                </ul>
+            </form>
+        </section>
+        <!--		<section class="split">
 			<section>
 				<div class="contact-method">
 					<span class="icon alt fa-envelope"></span>
@@ -742,41 +744,96 @@ toggleButton.addEventListener('click', function() {
 				</div>
 			</section>
 		</section>-->
-	</div>
+    </div>
 </section>
 
 <!-- Footer -->
-	<footer id="footer" class="socials">
-	<h2> Socials </h2>
-		<div class="inner">
-			<ul class="icons">
-				
-				<li><a href="https://twitter.com/thatloststudent" target="_blank"><i class="icon alt twitter"><span class="label">Twitter</span></i></a></li>
-				
-				
-				<li><a href="https://infosec.exchange/@thatloststudent" class="icon alt mastodon" target="_blank"><span class="label">Fediverse</span></a></li>
-				
-				
-				<li><a href="https://matrix.to/#/&commat;nischay&colon;nischay&period;me" class="icon alt matrix" target="_black"><img src="/assets/images/icons/matrix.svg" style="width: 40px; max-height:20px;"><span class="label">Matrix</span></a></li>
-				
-				
-				
-				
-				
-				
-				
-				
-				<li><a href="https://github.com/hegdenischay" class="icon alt github" target="_blank"><span class="label">GitHub</span></a></li>
-				
-				
-				
-				<li><a href="https://www.linkedin.com/in/nischay-hegde-ba9030119" class="icon alt linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-				
-			</ul>
-		</div>
-	</footer>
+<footer id="footer" class="socials">
+    <h2>Socials</h2>
+    <div class="inner">
+        <ul class="icons">
+            
+            <li>
+                <a href="https://twitter.com/thatloststudent" target="_blank"
+                    ><i class="icon alt twitter"
+                        ><span class="label">Twitter</span></i
+                    ></a
+                >
+            </li>
+             
+            <li>
+                <a
+                    href="https://infosec.exchange/@thatloststudent"
+                    class="icon alt mastodon"
+                    target="_blank"
+                    ><span class="label">Fediverse</span></a
+                >
+            </li>
+             
+            <li>
+                <a
+                    href="https://matrix.to/#/&commat;nischay&colon;nischay&period;me"
+                    class="icon alt matrix"
+                    target="_black"
+                    ><img
+                        src="/assets/images/icons/matrix.svg"
+                        style="width: 40px; max-height: 20px"
+                    /><span class="label">Matrix</span></a
+                >
+            </li>
+                   
+            <li>
+                <a
+                    href="https://github.com/hegdenischay"
+                    class="icon alt github"
+                    target="_blank"
+                    ><span class="label">GitHub</span></a
+                >
+            </li>
+              
+            <li>
+                <a
+                    href="https://www.linkedin.com/in/nischay-hegde-ba9030119"
+                    class="icon alt linkedin"
+                    target="_blank"
+                    ><span class="label">LinkedIn</span></a
+                >
+            </li>
+            
+        </ul>
+    </div>
+</footer>
 
-</div>
+<!-- Webring -->
+<section
+    class="webring"
+    style="
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
+        color: var(--text);
+    "
+>
+    <p>Part of the amrita.town webring!</p>
+    <div>
+        <a
+            href="https://amrita.town"
+            style="color: var(--text); margin-right: 10px"
+            >amrita.town</a
+        >
+        <a
+            href="https://amrita.town/prev"
+            style="color: var(--text); margin-right: 10px"
+            >← prev</a
+        >
+        <a
+            href="https://amrita.town/random"
+            style="color: var(--text); margin-right: 10px"
+            >⚄ random</a
+        >
+        <a href="https://amrita.town/next" style="color: var(--text)">next →</a>
+    </div>
+</section>
 
 
 </body>
