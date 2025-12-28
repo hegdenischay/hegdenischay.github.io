@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        NoobCTF 0x1 | Nischay
+        VPNs for a layperson | Nischay
     </title>
     <meta charset="utf-8" />
     <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
@@ -376,55 +376,15 @@
 <section id="one">
 	<div class="inner">
 		<header class="major">
-			<h1><center>NoobCTF 0x1</center></h1>
+			<h1><center>VPNs for a layperson</center></h1>
 		</header>
-		<span class="description"><center><i><h3>Writeup of all the rev challs in NoobCTF 0x1</h3></span></i></center>
+		<span class="description"><center><i><h3>A cybersecurity researcher's attempt to simplify VPNs and their usecases</h3></span></i></center>
 		
-		<h1 id="introduction">Introduction</h1>
+		<p>Every now and then, a YouTuber comes out with yet another sponsored video where VPNs are mentioned. You might even hear them scaremongering about how without VPNs, your open WiFi hotspot in $coffeeShop would have some kind of hacker in a dark hoodie rubbing his hands like a cartoon villain, waiting for you to log into Instagram/Facebook/normie social media, and how they’d be able to steal your personal information blah blah.</p>
 
-<p>All of the reversing challenges in this CTF were packed with <code class="language-plaintext highlighter-rouge">upx</code>. Therefore, I’ll be talking about only the decrypted versions of these challenges. All of them were decrypted with the simple command <code class="language-plaintext highlighter-rouge">upx -d infile -o outfile</code>. All of them are also Rust challenges that were more or less solved by traversing around it to invoke a certain function.</p>
+<p>It’s all fearmongering, and <a href="https://whynohttps.com/country/cn">unless you live in China</a> and everything except login information is unencrypted (hyperbole!), you’re <em>probably</em> fine with connecting to open WiFi hotspots. But let’s actually take a look into <em>why</em> you’re safe now and you no longer need to care about this extremely specific usecase that’s somehow still being shown like we’re in 2010.</p>
 
-<h1 id="stringcrack">Stringcrack</h1>
-
-<p>Question: <code class="language-plaintext highlighter-rouge">The String is all you have</code></p>
-
-<p>Points: 150</p>
-
-<h2 id="short-writeup">Short Writeup</h2>
-
-<p>Get into the <code class="language-plaintext highlighter-rouge">StringCrack::crack1</code> function and change ZF two times to get into the right method that prints out the flag</p>
-
-<h2 id="flag">Flag</h2>
-
-<p><code class="language-plaintext highlighter-rouge">noob{n0boot0br00t}</code></p>
-
-<h1 id="lenrev">Lenrev</h1>
-
-<p>Question: <code class="language-plaintext highlighter-rouge">Crack | Compare | Bypass</code></p>
-
-<p>Points: 200</p>
-
-<h2 id="short-writeup-1">Short Writeup</h2>
-
-<p><code class="language-plaintext highlighter-rouge">lenrev::crack</code> is the function where the flag is. Traverse to that function and bypass an <code class="language-plaintext highlighter-rouge">if</code> condition, and you’ll get the flag.</p>
-
-<h2 id="flag-1">Flag</h2>
-
-<p><code class="language-plaintext highlighter-rouge">noob{bufferr34d}</code></p>
-
-<h1 id="replacefunc">ReplaceFunc</h1>
-
-<p>Question: <code class="language-plaintext highlighter-rouge">Crack and redirect your way to the top of the hill</code></p>
-
-<p>Points: 200</p>
-
-<h2 id="short-writeup-2">Short Writeup</h2>
-
-<p>The flag is in <code class="language-plaintext highlighter-rouge">replacefunc::function1</code> and can be printed out by changing one ZF.</p>
-
-<h2 id="flag-2">Flag</h2>
-
-<p><code class="language-plaintext highlighter-rouge">noob{easybyp4ss}</code></p>
+<h2 id="what-was-the-actual-issue">What was the actual issue?</h2>
 
 	</div>
 </section>

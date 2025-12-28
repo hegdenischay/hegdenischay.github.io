@@ -1,0 +1,57 @@
+<!-- Header -->
+<!--<header id="header"{% if page.layout == "landing" %} class="alt style2"{% endif %}{% if page.layout == "home" %} class="alt"{% endif %}>
+	<a href="{{ "" | baseurl }}/" class="logo"><strong>{{ site.title }}</strong> <span>{{ site.subtitle }}</span></a>-->
+<input id="color-mode" type="checkbox" name="color-mode">
+<label for="color-mode">Dark Mode</label>
+</header>
+<!--
+<nav id="menu">
+	<ul class="links">
+        {% for page in site.pages %}
+		    {% if page.layout == "home" %}
+		        <li><a href="{{ "" | baseurl }}/">{{ page.title }}</a></li>
+	    	{% endif %}
+		{% endfor %}
+		{% for page in site.html_pages %}
+		    {% if page.layout != "home" and page.nav-menu == true %}
+		        <li><a href="{{ page.url | baseurl }}">{{ page.title }}</a></li>
+		    {% endif %}
+		{% endfor %}
+	</ul>
+</nav>-->
+
+<!-- Sidebar -->
+<nav id="menu">
+	<div class="sidebar">
+        {% for page in site.pages %}
+		    {% if page.layout == "home" %}
+		        <a href="{{ "" | baseurl }}/">{{ page.title }}</a>
+	    	{% endif %}
+		{% endfor %}
+		{% for page in site.html_pages %}
+		    {% if page.layout != "home" and page.nav-menu == true %}
+		        <a href="{{ page.url | baseurl }}">{{ page.title }}</a>
+		    {% endif %}
+		{% endfor %}
+	</div>
+</nav>
+
+<!-- Div with one image in it lol -->
+<!--
+   -<div class="name" align="center"><img src="/assets/images/name.png" href="/"></div>
+	 -->
+<div class="name" align="center" >
+	<pre>
+             ███                   █████                          
+            ░░░                   ░░███                           
+ ████████   ████   █████   ██████  ░███████    ██████   █████ ████
+░░███░░███ ░░███  ███░░   ███░░███ ░███░░███  ░░░░░███ ░░███ ░███ 
+ ░███ ░███  ░███ ░░█████ ░███ ░░░  ░███ ░███   ███████  ░███ ░███ 
+ ░███ ░███  ░███  ░░░░███░███  ███ ░███ ░███  ███░░███  ░███ ░███ 
+ ████ █████ █████ ██████ ░░██████  ████ █████░░████████ ░░███████ 
+░░░░ ░░░░░ ░░░░░ ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░███ 
+                                                         ███ ░███ 
+                                                        ░░██████  
+                                                         ░░░░░░   
+	</pre>
+</div>
